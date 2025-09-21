@@ -1,0 +1,299 @@
+請幫我修改下面的程式使它能夠在掃描的過程中接收到reply(發送和接收好像不在同一個網段)
+不然當我使用sudo ./lab2 eth0時，都接收不到除了        
+From 00-15-5d-61-55-ce (172.19.213.132)
+        To   00-00-00-00-00-00 (172.19.208.1)
+*2025/09/21 09:37:44 00-15-5d-31-a9-c7=>00-15-5d-61-55-ce (Type=0806/Len=42)
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+        From 00-15-5d-31-a9-c7 (172.19.208.1)
+        To   00-15-5d-61-55-ce (172.19.213.132)以外的reply，只有
+        << 2025/09/21 09:37:46 00-15-5d-61-51-8a=>ff-ff-ff-ff-ff-ff (Type=0806/Len=60)
+Scanning IP: 172.19.213.43
+arp_request() to 172.19.213.43
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+        From 00-15-5d-61-51-8a (192.168.55.15)
+        To   00-00-00-00-00-00 (172.19.213.43)
+<< 2025/09/21 09:37:47 00-15-5d-61-51-8a=>ff-ff-ff-ff-ff-ff (Type=0806/Len=60)
+Scanning IP: 172.19.213.44
+arp_request() to 172.19.213.44
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+        From 00-15-5d-61-51-8a (192.168.55.15)
+        To   00-00-00-00-00-00 (172.19.213.44)
+<< 2025/09/21 09:37:48 00-15-5d-61-51-8a=>ff-ff-ff-ff-ff-ff (Type=0806/Len=60)
+告訴我原因以及所有可能改正的方案
+網路資訊:
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet 10.255.255.254/32 brd 10.255.255.254 scope global lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc mq state UP group default qlen 1000
+    link/ether 00:15:5d:61:55:ce brd ff:ff:ff:ff:ff:ff
+    inet 172.19.213.132/20 brd 172.19.223.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::215:5dff:fe61:55ce/64 scope link 
+       valid_lft forever preferred_lft forever
+
+default via 172.19.208.1 dev eth0 proto kernel 
+172.19.208.0/20 dev eth0 proto kernel scope link src 172.19.213.132 
+### 檔案名稱: lab2.c
+-------------------------------------------------
+#include <pcap.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include "arp.h"
+#include "netdevice.h"
+#include "util.h"
+
+// 外部函數聲明
+void arptable_print(void);
+
+// 全域變數用於追蹤掃描進度
+static int current_ip_suffix = 1;
+static int scan_complete = 0;
+static time_t last_scan_time = 0;
+static const int SCAN_INTERVAL = 1; // 每秒掃描一個IP
+
+/**
+ * scan_next_ip() - 掃描下一個IP位址
+ */
+void scan_next_ip(netdevice_t *p) {
+    time_t current_time = time(NULL);
+    
+    // 控制掃描頻率
+    if (current_time - last_scan_time < SCAN_INTERVAL) {
+        return;
+    }
+    
+    if (current_ip_suffix > 254) {
+        if (!scan_complete) {
+            printf("Network scan completed!\n");
+            arptable_print();
+            scan_complete = 1;
+        }
+        return;
+    }
+    
+    // 構建目標IP位址 (192.168.55.x) - 與Sender protocol address同網段
+    uint8_t target_ip[4] = {172, 19, 213, current_ip_suffix}; //todo
+     
+    printf("Scanning IP: %d.%d.%d.%d\n", 
+           target_ip[0], target_ip[1], target_ip[2], target_ip[3]);
+    
+    // 發送ARP請求
+    arp_request(p, target_ip);
+    
+    current_ip_suffix++;
+    last_scan_time = current_time;
+}
+
+/**
+ * main_proc() - The main body of this lab
+ **/
+int main_proc(netdevice_t *p) {
+    int key;
+    char buf[MAX_LINEBUF];
+    ipaddr_t ip;
+    
+    printf("Starting ARP network discovery...\n");
+    printf("Press Enter to stop and show results\n");
+    printf("Or type an IP address to send specific ARP request\n\n");
+
+#if (FG_ARP_SEND_REQUEST == 1)
+    /*
+     * Send ARP request to given default IP address
+     */
+    arp_request(p, NULL);
+#endif /* FG_ARP_REQUEST */
+
+    while (1) {
+        /*
+         * Process packets in the capture buffer
+         */
+        if (netdevice_rx(p) == -1) {
+            break;
+        }
+        
+        /*----------------------------------*
+         * ARP網路掃描 - 插入在這裡持續執行 *
+         *----------------------------------*/
+        scan_next_ip(p);
+        
+        /*
+         * If key is not pressed, continue to next loop
+         */
+        if (!readready()) {
+            continue;
+        }
+        
+        /*
+         * If user pressed enter, exit the program
+         */
+        if ((key = fgetc(stdin)) == '\n') {
+            break;
+        }
+        
+        ungetc(key, stdin);
+        if (fgets(buf, MAX_LINEBUF, stdin) == NULL) {
+            break;
+        }
+        
+        if ((ip = retrieve_ip_addr(buf)) == 0) {
+            printf("Invalid IP (Enter to exit)\n");
+        } else {
+            printf("Sending ARP request to specific IP: %s\n", buf);
+            arp_request(p, (unsigned char *)&ip);
+        }
+    }
+    
+    // 程式結束前顯示最終結果
+    printf("\nFinal scan results:\n");
+    arptable_print();
+    
+    return 0;
+}
+
+int main(int argc, char *argv[]) {
+    char devname[MAX_LINEBUF], errbuf[PCAP_ERRBUF_SIZE];
+    netdevice_t *p;
+    
+    printf("ARP Network Discovery Tool\n");
+    printf("==========================\n");
+    
+    /*
+     * Get the device name of capture interface
+     */
+    if (argc == 2) {
+        strcpy(devname, argv[1]);
+    } else if (netdevice_getdevice(0, devname) == NETDEVICE_ERR) {
+        return -1;
+    }
+    
+    /*
+     * Open the specified interface
+     */
+    if ((p = netdevice_open(devname, errbuf)) == NULL) {
+        fprintf(stderr, "Failed to open capture interface\n\t%s\n", errbuf);
+        return -1;
+    }
+    
+    printf("Capturing packets on interface %s\n", devname);
+    
+    /*
+     * Register the packet handler callback of specific protocol
+     */
+    netdevice_add_proto(p, ETH_ARP, (ptype_handler)&arp_main);
+    
+    main_proc(p);
+    
+    /*
+     * Clean up the resources
+     */
+    netdevice_close(p);
+    return 0;
+}
+
+### 檔案名稱: config.c
+-------------------------------------------------
+#include <stdint.h>
+   /*
+    * The MAC address of your interface
+    */
+   uint8_t myethaddr[] = {0x00, 0x15, 0x5d, 0x61, 0x51, 0x8a};
+   /*
+    * The IP address of your interface (Sender protocol address)
+    */
+   uint8_t myipaddr[] = {192, 168, 55, 15}; // 學號末四碼5515
+   /*
+    * The default IP address to send ARP requests to
+    */
+   uint8_t defarpip[] = {192, 168, 55, 1};
+
+### 檔案名稱: arptable.c
+-------------------------------------------------
+
+#include "util.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_ARP_ENTRIES 256
+
+typedef struct {
+    uint8_t ip[4];
+    uint8_t eth[6];
+    int valid;
+} arp_entry_t;
+
+static arp_entry_t arp_table[MAX_ARP_ENTRIES];
+static int arp_count = 0;
+
+/*
+ * arptable_existed() - Check whether an IP address existed in the ARP table
+ * \return The corresponding ethernet address. Return NULL if not found.
+ */
+uint8_t *arptable_existed(uint8_t *ipaddr) {
+    for (int i = 0; i < arp_count; i++) {
+        if (arp_table[i].valid && 
+            memcmp(arp_table[i].ip, ipaddr, 4) == 0) {
+            return arp_table[i].eth;
+        }
+    }
+    return NULL;
+}
+
+/*
+ * arptable_add() - Append a mapping of IP address to the ARP table
+ */
+void arptable_add(uint8_t *ip, uint8_t *eth) {
+    // DEBUG: 確認函式被呼叫
+    printf("[DEBUG] arptable_add() called for IP: %d.%d.%d.%d\n", 
+           ip[0], ip[1], ip[2], ip[3]);
+    
+    // 檢查是否已存在
+    if (arptable_existed(ip) != NULL) {
+        printf("[DEBUG] IP already exists in table\n");
+        return;
+    }
+    
+    // 添加新條目
+    if (arp_count < MAX_ARP_ENTRIES) {
+        memcpy(arp_table[arp_count].ip, ip, 4);
+        memcpy(arp_table[arp_count].eth, eth, 6);
+        arp_table[arp_count].valid = 1;
+        arp_count++;
+        
+        // 打印發現的機器
+        printf("*** Found active machine: %d.%d.%d.%d -> %02x:%02x:%02x:%02x:%02x:%02x ***\n",
+               ip[0], ip[1], ip[2], ip[3],
+               eth[0], eth[1], eth[2], eth[3], eth[4], eth[5]);
+    } else {
+        printf("[DEBUG] ARP table full!\n");
+    }
+}
+
+/*
+ * arptable_print() - Print all entries in the ARP table
+ */
+void arptable_print(void) {
+    printf("\n=== ARP Table ===\n");
+    printf("Total active machines found: %d\n", arp_count);
+    for (int i = 0; i < arp_count; i++) {
+        if (arp_table[i].valid) {
+            printf("%d.%d.%d.%d -> %02x:%02x:%02x:%02x:%02x:%02x\n",
+                   arp_table[i].ip[0], arp_table[i].ip[1], 
+                   arp_table[i].ip[2], arp_table[i].ip[3],
+                   arp_table[i].eth[0], arp_table[i].eth[1], 
+                   arp_table[i].eth[2], arp_table[i].eth[3], 
+                   arp_table[i].eth[4], arp_table[i].eth[5]);
+        }
+    }
+    printf("================\n\n");
+}
+你的程式在廣播 ARP Request 時，來源 IP 寫成 192.168.55.15，可是你所在網段是 172.19.213.0/20。
+→ 區域網路上的其他機器會覺得這個 Request「不屬於自己網段」，因此不會回覆。
+
