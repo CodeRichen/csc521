@@ -1,43 +1,3 @@
-請幫我修改下面的程式使它能夠在掃描的過程中接收到reply(發送和接收好像不在同一個網段)
-不然當我使用sudo ./lab2 eth0時，都接收不到除了        
-From 00-15-5d-61-55-ce (172.19.213.132)
-        To   00-00-00-00-00-00 (172.19.208.1)
-*2025/09/21 09:37:44 00-15-5d-31-a9-c7=>00-15-5d-61-55-ce (Type=0806/Len=42)
-ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
-        From 00-15-5d-31-a9-c7 (172.19.208.1)
-        To   00-15-5d-61-55-ce (172.19.213.132)以外的reply，只有
-        << 2025/09/21 09:37:46 00-15-5d-61-51-8a=>ff-ff-ff-ff-ff-ff (Type=0806/Len=60)
-Scanning IP: 172.19.213.43
-arp_request() to 172.19.213.43
-ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
-        From 00-15-5d-61-51-8a (192.168.55.15)
-        To   00-00-00-00-00-00 (172.19.213.43)
-<< 2025/09/21 09:37:47 00-15-5d-61-51-8a=>ff-ff-ff-ff-ff-ff (Type=0806/Len=60)
-Scanning IP: 172.19.213.44
-arp_request() to 172.19.213.44
-ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
-        From 00-15-5d-61-51-8a (192.168.55.15)
-        To   00-00-00-00-00-00 (172.19.213.44)
-<< 2025/09/21 09:37:48 00-15-5d-61-51-8a=>ff-ff-ff-ff-ff-ff (Type=0806/Len=60)
-告訴我原因以及所有可能改正的方案
-網路資訊:
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet 10.255.255.254/32 brd 10.255.255.254 scope global lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
-       valid_lft forever preferred_lft forever
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc mq state UP group default qlen 1000
-    link/ether 00:15:5d:61:55:ce brd ff:ff:ff:ff:ff:ff
-    inet 172.19.213.132/20 brd 172.19.223.255 scope global eth0
-       valid_lft forever preferred_lft forever
-    inet6 fe80::215:5dff:fe61:55ce/64 scope link 
-       valid_lft forever preferred_lft forever
-
-default via 172.19.208.1 dev eth0 proto kernel 
-172.19.208.0/20 dev eth0 proto kernel scope link src 172.19.213.132 
 ### 檔案名稱: lab2.c
 -------------------------------------------------
 #include <pcap.h>
@@ -52,44 +12,37 @@ default via 172.19.208.1 dev eth0 proto kernel
 // 外部函數聲明
 void arptable_print(void);
 
-// 全域變數用於追蹤掃描進度
-static int current_ip_suffix = 1;
-static int scan_complete = 0;
-static time_t last_scan_time = 0;
-static const int SCAN_INTERVAL = 1; // 每秒掃描一個IP
+
 
 /**
  * scan_next_ip() - 掃描下一個IP位址
  */
+// 原本只掃 172.19.213.x
+// 改成 172.19.208.1 ~ 172.19.223.254
+uint8_t base_ip[4] = {172, 19, 208, 1}; 
+int subnet_size = 4094; // 2^12 - 2 (排掉 network 和 broadcast)
+
 void scan_next_ip(netdevice_t *p) {
-    time_t current_time = time(NULL);
-    
-    // 控制掃描頻率
-    if (current_time - last_scan_time < SCAN_INTERVAL) {
+    static int offset = 1;
+    if (offset > subnet_size) {
+        printf("Network scan completed!\n");
+        arptable_print();
         return;
     }
+
+    uint8_t target_ip[4];
+    target_ip[0] = 172;
+    target_ip[1] = 19;
+    target_ip[2] = 208 + ((offset >> 8) & 0xF); 
+    target_ip[3] = (offset & 0xFF);
     
-    if (current_ip_suffix > 254) {
-        if (!scan_complete) {
-            printf("Network scan completed!\n");
-            arptable_print();
-            scan_complete = 1;
-        }
-        return;
-    }
-    
-    // 構建目標IP位址 (192.168.55.x) - 與Sender protocol address同網段
-    uint8_t target_ip[4] = {172, 19, 213, current_ip_suffix}; //todo
-     
-    printf("Scanning IP: %d.%d.%d.%d\n", 
+    printf("Scanning IP: %d.%d.%d.%d\n",
            target_ip[0], target_ip[1], target_ip[2], target_ip[3]);
-    
-    // 發送ARP請求
+
     arp_request(p, target_ip);
-    
-    current_ip_suffix++;
-    last_scan_time = current_time;
+    offset++;
 }
+
 
 /**
  * main_proc() - The main body of this lab
@@ -200,18 +153,10 @@ int main(int argc, char *argv[]) {
 ### 檔案名稱: config.c
 -------------------------------------------------
 #include <stdint.h>
-   /*
-    * The MAC address of your interface
-    */
-   uint8_t myethaddr[] = {0x00, 0x15, 0x5d, 0x61, 0x51, 0x8a};
-   /*
-    * The IP address of your interface (Sender protocol address)
-    */
-   uint8_t myipaddr[] = {192, 168, 55, 15}; // 學號末四碼5515
-   /*
-    * The default IP address to send ARP requests to
-    */
-   uint8_t defarpip[] = {192, 168, 55, 1};
+uint8_t myethaddr[] = {0x00, 0x15, 0x5d, 0x61, 0x55, 0xce}; // eth0 的 MAC
+uint8_t myipaddr[] = {172, 19, 213, 132};                   // eth0 的 IP
+uint8_t defarpip[] = {172, 19, 208, 1};                     // gateway
+
 
 ### 檔案名稱: arptable.c
 -------------------------------------------------
@@ -294,6 +239,5 @@ void arptable_print(void) {
     }
     printf("================\n\n");
 }
-你的程式在廣播 ARP Request 時，來源 IP 寫成 192.168.55.15，可是你所在網段是 172.19.213.0/20。
-→ 區域網路上的其他機器會覺得這個 Request「不屬於自己網段」，因此不會回覆。
+
 

@@ -6,48 +6,46 @@
 #include "arp.h"
 #include "netdevice.h"
 #include "util.h"
+#include "config.h"
 
 // 外部函數聲明
 void arptable_print(void);
 
-// 全域變數用於追蹤掃描進度
-static int current_ip_suffix = 1;
-static int scan_complete = 0;
-static time_t last_scan_time = 0;
-static const int SCAN_INTERVAL = 1; // 每秒掃描一個IP
+
 
 /**
  * scan_next_ip() - 掃描下一個IP位址
  */
+
+uint8_t base_ip[4] = {192, 168, 0, 1}; 
+int subnet_size = 4094; // 2^12 - 2 (排掉 network 和 broadcast)
+
 void scan_next_ip(netdevice_t *p) {
-    time_t current_time = time(NULL);
-    
-    // 控制掃描頻率
-    if (current_time - last_scan_time < SCAN_INTERVAL) {
+    static int offset = 1;
+    if (offset > subnet_size) {
+        printf("Network scan completed!\n");
+        arptable_print();
         return;
     }
+
+    uint8_t target_ip[4];
+    target_ip[0] = 192;
+    target_ip[1] = 168;
+    target_ip[2] = 0 + ((offset >> 8) & 0xF); 
+    target_ip[3] = (offset & 0xFF);
     
-    if (current_ip_suffix > 254) {
-        if (!scan_complete) {
-            printf("Network scan completed!\n");
-            arptable_print();
-            scan_complete = 1;
-        }
-        return;
-    }
-    
-    // 構建目標IP位址 (192.168.55.x) - 與Sender protocol address同網段
-    uint8_t target_ip[4] = {172, 19, 213, current_ip_suffix}; //todo
-     
-    printf("Scanning IP: %d.%d.%d.%d\n", 
+    printf("Scanning IP: %d.%d.%d.%d\n",
            target_ip[0], target_ip[1], target_ip[2], target_ip[3]);
-    
-    // 發送ARP請求
+
     arp_request(p, target_ip);
+    offset++;
     
-    current_ip_suffix++;
-    last_scan_time = current_time;
+    struct timespec ts;
+    ts.tv_sec = 0;
+    ts.tv_nsec = 100000000; // 0.1 秒 = 1e8 奈秒
+    nanosleep(&ts, NULL);
 }
+
 
 /**
  * main_proc() - The main body of this lab
@@ -116,6 +114,16 @@ int main_proc(netdevice_t *p) {
 }
 
 int main(int argc, char *argv[]) {
+    const char *iface = "eth0";  // 預設介面
+
+    if (argc >= 2) {
+        iface = argv[1];          // 使用者指定介面
+    }
+
+    load_network_config(iface);    // 自動讀取 MAC、IP、GW
+
+    printf("Using interface: %s\n", iface);
+    
     char devname[MAX_LINEBUF], errbuf[PCAP_ERRBUF_SIZE];
     netdevice_t *p;
     
