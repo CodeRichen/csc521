@@ -8,49 +8,46 @@
 #include "icmp.h"
 #include "netdevice.h"
 #include "util.h"
+#include "icmp.h"
 
 /**
  * main_proc() - the main thread
  **/
 int main_proc(netdevice_t *p) {
-  char buf[MAX_LINEBUF];
-  ipaddr_t ip;
-  int key;
+    char buf[MAX_LINEBUF];
+    ipaddr_t ip;
+    int key;
 
-#if (FG_ARP_SEND_REQUEST == 1)
-  arp_request(p, NULL);
-#endif /* FG_ARP_REQUEST */
-#if (FG_ICMP_SEND_REQUEST == 1)
-  icmp_ping(p, NULL);
-#endif /* FG_ICMP_SEND_REQUEST */
+    uint8_t base_ip[4] = {140, 127, 208, 0};
 
-  /* Read the packets */
-  while (1) {
-    /*
-     * Process packets in the capture buffer
-     */
-    if (netdevice_rx(p) == -1) {
-      break;
-    }
+    printf("Start ICMP scan on subnet: %d.%d.%d.0/24\n",
+           base_ip[0], base_ip[1], base_ip[2]);
 
-    /*----------------------------------*
-     * Other works can be inserted here *
-     *----------------------------------*/
-
-    /* key pressed? */
-    if (!readready()) continue;
-    if ((key = fgetc(stdin)) == '\n') break;
-    ungetc(key, stdin);
-    if (fgets(buf, MAX_LINEBUF, stdin) == NULL) break;
-    if ((ip = retrieve_ip_addr(buf)) == 0) {
-      printf("Invalid IP (Enter to exit)\n");
-    } else {
-      icmp_ping(p, (uint8_t *)&ip);
-    }
-  }
-
-  return 0;
+  uint8_t target_ip[4];
+for (int i = 1; i <= 254; i++) {
+    target_ip[0] = 140;
+    target_ip[1] = 127;
+    target_ip[2] = 208;
+    target_ip[3] = i;
+    icmp_ping(p, target_ip);
+    usleep(50000);
 }
+
+
+    printf("Waiting for ICMP Echo Reply ... (press Enter to stop)\n");
+
+    while (1) {
+        if (netdevice_rx(p) == -1)
+            break;
+
+        if (readready()) {
+            if ((key = fgetc(stdin)) == '\n') break;
+        }
+    }
+
+    return 0;
+}
+
 
 /****
  ****	MAIN ENTRY
