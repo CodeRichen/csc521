@@ -1,3 +1,5 @@
+### 檔案名稱: lab2.c
+-------------------------------------------------
 #include <pcap.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,7 +8,6 @@
 #include "arp.h"
 #include "netdevice.h"
 #include "util.h"
-#include "config.h"
 
 // 外部函數聲明
 void arptable_print(void);
@@ -18,7 +19,7 @@ void arptable_print(void);
  */
 // 原本只掃 172.19.213.x
 // 改成 172.19.208.1 ~ 172.19.223.254
-uint8_t base_ip[4] = {192, 168, 0, 1}; 
+uint8_t base_ip[4] = {172, 19, 208, 1}; 
 int subnet_size = 4094; // 2^12 - 2 (排掉 network 和 broadcast)
 
 void scan_next_ip(netdevice_t *p) {
@@ -30,21 +31,16 @@ void scan_next_ip(netdevice_t *p) {
     }
 
     uint8_t target_ip[4];
-    target_ip[0] = 192;
-    target_ip[1] = 168;
-    target_ip[2] = 0 + ((offset >> 8) & 0xF); 
+    target_ip[0] = 172;
+    target_ip[1] = 19;
+    target_ip[2] = 208 + ((offset >> 8) & 0xF); 
     target_ip[3] = (offset & 0xFF);
     
-    //printf("Scanning IP: %d.%d.%d.%d\n",
-      //     target_ip[0], target_ip[1], target_ip[2], target_ip[3]);
+    printf("Scanning IP: %d.%d.%d.%d\n",
+           target_ip[0], target_ip[1], target_ip[2], target_ip[3]);
 
     arp_request(p, target_ip);
     offset++;
-    
-    struct timespec ts;
-    ts.tv_sec = 0;
-    ts.tv_nsec = 100000000; // 0.1 秒 = 1e8 奈秒
-    nanosleep(&ts, NULL);
 }
 
 
@@ -115,16 +111,6 @@ int main_proc(netdevice_t *p) {
 }
 
 int main(int argc, char *argv[]) {
-    const char *iface = "eth0";  // 預設介面
-
-    if (argc >= 2) {
-        iface = argv[1];          // 使用者指定介面
-    }
-
-    load_network_config(iface);    // 自動讀取 MAC、IP、GW
-
-    printf("Using interface: %s\n", iface);
-    
     char devname[MAX_LINEBUF], errbuf[PCAP_ERRBUF_SIZE];
     netdevice_t *p;
     
@@ -163,3 +149,95 @@ int main(int argc, char *argv[]) {
     netdevice_close(p);
     return 0;
 }
+
+### 檔案名稱: config.c
+-------------------------------------------------
+#include <stdint.h>
+uint8_t myethaddr[] = {0x00, 0x15, 0x5d, 0x61, 0x55, 0xce}; // eth0 的 MAC
+uint8_t myipaddr[] = {172, 19, 213, 132};                   // eth0 的 IP
+uint8_t defarpip[] = {172, 19, 208, 1};                     // gateway
+
+
+### 檔案名稱: arptable.c
+-------------------------------------------------
+
+#include "util.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_ARP_ENTRIES 256
+
+typedef struct {
+    uint8_t ip[4];
+    uint8_t eth[6];
+    int valid;
+} arp_entry_t;
+
+static arp_entry_t arp_table[MAX_ARP_ENTRIES];
+static int arp_count = 0;
+
+/*
+ * arptable_existed() - Check whether an IP address existed in the ARP table
+ * \return The corresponding ethernet address. Return NULL if not found.
+ */
+uint8_t *arptable_existed(uint8_t *ipaddr) {
+    for (int i = 0; i < arp_count; i++) {
+        if (arp_table[i].valid && 
+            memcmp(arp_table[i].ip, ipaddr, 4) == 0) {
+            return arp_table[i].eth;
+        }
+    }
+    return NULL;
+}
+
+/*
+ * arptable_add() - Append a mapping of IP address to the ARP table
+ */
+void arptable_add(uint8_t *ip, uint8_t *eth) {
+    // DEBUG: 確認函式被呼叫
+    printf("[DEBUG] arptable_add() called for IP: %d.%d.%d.%d\n", 
+           ip[0], ip[1], ip[2], ip[3]);
+    
+    // 檢查是否已存在
+    if (arptable_existed(ip) != NULL) {
+        printf("[DEBUG] IP already exists in table\n");
+        return;
+    }
+    
+    // 添加新條目
+    if (arp_count < MAX_ARP_ENTRIES) {
+        memcpy(arp_table[arp_count].ip, ip, 4);
+        memcpy(arp_table[arp_count].eth, eth, 6);
+        arp_table[arp_count].valid = 1;
+        arp_count++;
+        
+        // 打印發現的機器
+        printf("*** Found active machine: %d.%d.%d.%d -> %02x:%02x:%02x:%02x:%02x:%02x ***\n",
+               ip[0], ip[1], ip[2], ip[3],
+               eth[0], eth[1], eth[2], eth[3], eth[4], eth[5]);
+    } else {
+        printf("[DEBUG] ARP table full!\n");
+    }
+}
+
+/*
+ * arptable_print() - Print all entries in the ARP table
+ */
+void arptable_print(void) {
+    printf("\n=== ARP Table ===\n");
+    printf("Total active machines found: %d\n", arp_count);
+    for (int i = 0; i < arp_count; i++) {
+        if (arp_table[i].valid) {
+            printf("%d.%d.%d.%d -> %02x:%02x:%02x:%02x:%02x:%02x\n",
+                   arp_table[i].ip[0], arp_table[i].ip[1], 
+                   arp_table[i].ip[2], arp_table[i].ip[3],
+                   arp_table[i].eth[0], arp_table[i].eth[1], 
+                   arp_table[i].eth[2], arp_table[i].eth[3], 
+                   arp_table[i].eth[4], arp_table[i].eth[5]);
+        }
+    }
+    printf("================\n\n");
+}
+
+

@@ -3,7 +3,7 @@
 /* #include <windows.h> */
 
 #include <pcap.h>
-
+#include "config.h"
 #include "arp.h"
 #include "icmp.h"
 #include "netdevice.h"
@@ -27,7 +27,7 @@ int main_proc(netdevice_t *p) {
   /* Read the packets */
   while (1) {
     /*
-     * Proccess packets in the capture buffer
+     * Process packets in the capture buffer
      */
     if (netdevice_rx(p) == -1) {
       break;
@@ -55,7 +55,6 @@ int main_proc(netdevice_t *p) {
 /****
  ****	MAIN ENTRY
  ****/
-
 int main(int argc, char *argv[]) {
   char devname[MAX_LINEBUF], errbuf[PCAP_ERRBUF_SIZE];
   netdevice_t *p;
@@ -68,6 +67,12 @@ int main(int argc, char *argv[]) {
   } else if (netdevice_getdevice(0, devname) == NETDEVICE_ERR) {
     return -1;
   }
+
+  /*
+   * Load system network configuration (MAC, IP, MASK, GATEWAY)
+   */
+  printf("Loading network configuration for interface: %s\n", devname);
+  load_network_config(devname);  // ✅ 新增自動讀取網卡資訊
 
   /*
    * Open the specified interface
@@ -84,10 +89,14 @@ int main(int argc, char *argv[]) {
   netdevice_add_proto(p, ETH_ARP, (ptype_handler)&arp_main);
   netdevice_add_proto(p, ETH_IP, (ptype_handler)&ip_main);
 
+  /*
+   * Start main loop
+   */
   main_proc(p);
 
   /*
    * Clean up the resources
    */
   netdevice_close(p);
+  return 0;
 }
