@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
   pcap_t *fp;
   char errbuf[PCAP_ERRBUF_SIZE];
   uint8_t packet[100];
-  int i;
+  //int i;
 
   /* Check the validity of the command line */
   if (argc != 2) {
@@ -33,12 +33,12 @@ int main(int argc, char **argv) {
   }
 
   /* Supposing to be on ethernet, set mac destination to 1:1:1:1:1:1 */
-  packet[0] = 0x01;
-  packet[1] = 0x01;
-  packet[2] = 0x01;
-  packet[3] = 0x01;
-  packet[4] = 0x01;
-  packet[5] = 0x01;
+  packet[0] = 0x63;
+  packet[1] = 0x73;
+  packet[2] = 0x63;
+  packet[3] = 0x35;
+  packet[4] = 0x32;
+  packet[5] = 0x31;
 
   /* set mac source to 2:2:2:2:2:2 */
   packet[6] = 0x02;
@@ -49,14 +49,23 @@ int main(int argc, char **argv) {
   packet[11] = 0x02;
 
   /* set ethernet frame type to 0x0c0d */
-  packet[12] = 0x0c;
-  packet[13] = 0x0d;
+  packet[12] = 0x00;
+  packet[13] = 0x00;
 
-  /* Fill the rest of the packet */
+  /* Fill the rest of the packet 
   for (i = 14; i < 100; i++) {
     packet[i] = i % 256;
-  }
+  }*/
 
+  packet[14] = 0x41;
+  packet[15] = 0x31;
+  packet[16] = 0x31;
+  packet[17] = 0x32;
+  packet[18] = 0x35;
+  packet[19] = 0x35;
+  packet[20] = 0x31;
+  packet[21] = 0x35;
+  
   /* Send down the packet */
   if (pcap_sendpacket(fp, packet, 100 /* size */) != 0) {
     fprintf(stderr, "\nError sending the packet: %s\n", pcap_geterr(fp));
