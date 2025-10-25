@@ -103,20 +103,42 @@ void arp_main(netdevice_t *p, uint8_t *pkt, unsigned int len) {
         arp_reply(p, arp->srceth, arp->srcip);
       break;
 
-    case ARP_OP_REPLY: /* ARP Reply */
-      if (IS_MY_IP(arp->dstip)) arptable_add(arp->srcip, arp->srceth);
-      if (tosend_queue.len > 0) {
-        if ((GET_IP(arp->srcip)) == tosend_queue.dst_ip) {
-          arp_resend(p);
-        } else {
-          printf("Resend ARP request to %s\n",
-                 ip_addrstr((uint8_t *)&tosend_queue.dst_ip, NULL));
-          /* If doesn't get response from desired IP,
-             resend the ARP request */
-          arp_request(p, (uint8_t *)&tosend_queue.dst_ip);
-        }
+case ARP_OP_REPLY: /* ARP Reply */
+  {
+    char s_srcip[BUFLEN_IP], s_dstip[BUFLEN_IP];
+    char s_srceth[BUFLEN_ETH];
+    printf("DEBUG: ARP REPLY raw: src=%s mac=%s -> dst=%s\n",
+           ip_addrstr(arp->srcip, s_srcip), eth_macaddr(arp->srceth, s_srceth),
+           ip_addrstr(arp->dstip, s_dstip));
+
+    /* show derived values used in logic */
+    ipaddr_t src_ip_u32 = GET_IP(arp->srcip);
+    ipaddr_t dst_ip_u32 = GET_IP(arp->dstip);
+    printf("DEBUG: GET_IP(src) = 0x%08x, GET_IP(dst) = 0x%08x, tosend_queue.dst_ip = 0x%08x\n",
+           (unsigned)src_ip_u32, (unsigned)dst_ip_u32, (unsigned)tosend_queue.dst_ip);
+
+    if (IS_MY_IP(arp->dstip)) {
+      printf("DEBUG: ARP reply is for me -> call arptable_add()\n");
+      arptable_add(arp->srcip, arp->srceth);
+    } else {
+      printf("DEBUG: ARP reply NOT for me (dst != myip)\n");
+    }
+
+    if (tosend_queue.len > 0) {
+      if ((GET_IP(arp->srcip)) == tosend_queue.dst_ip) {
+        printf("DEBUG: ARP reply matches queued dst -> arp_resend()\n");
+        arp_resend(p);
+      } else {
+        printf("Resend ARP request to %s\n",
+               ip_addrstr((uint8_t *)&tosend_queue.dst_ip, NULL));
+        /* If doesn't get response from desired IP,
+           resend the ARP request */
+        arp_request(p, (uint8_t *)&tosend_queue.dst_ip);
       }
-      break;
+    }
+  }
+  break;
+
 
 #if (DEBUG_ARP == 1)
     default:

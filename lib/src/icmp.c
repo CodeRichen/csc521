@@ -47,96 +47,98 @@ static char *ICMP_CODE[] = {
  * icmp_main() - The entry point to receive packets from the bottom layer.
  **/
 
+#define MY_ICMP_ID 0x5515
+
+/**
+ * icmp_main() - The entry point to receive packets from the bottom layer.
+ **/
 void icmp_main(netdevice_t *p, uint8_t *pkt, int len) {
-  myip_hdr_t *ip_hdr;
-  myicmp_hdr_t *icmp_hdr;
+    myip_hdr_t *ip_hdr;
+    myicmp_hdr_t *icmp_hdr;
 
-  ip_hdr = (myip_hdr_t *)pkt;
-  pkt += sizeof(myip_hdr_t);
-  len -= sizeof(myip_hdr_t);
+    ip_hdr = (myip_hdr_t *)pkt;
+    pkt += sizeof(myip_hdr_t);
+    len -= sizeof(myip_hdr_t);
 
-  icmp_hdr = (myicmp_hdr_t *)pkt;
+    icmp_hdr = (myicmp_hdr_t *)pkt;
 
 #if (DEBUG_ICMP == 1)
-  printf("%4d ICMP ", len);
-#endif /* DEBUG_ICMP == 1 */
+    printf("%4d ICMP ", len);
+#endif
 
-  print_ip(ip_hdr->srcip, "->");
-  print_ip(ip_hdr->dstip, ": ");
+    print_ip(ip_hdr->srcip, "->");
+    print_ip(ip_hdr->dstip, ": ");
 
-  if (icmp_hdr->type >= N_ICMP_TYPE) {
-    printf("[Bad Type %d] ", icmp_hdr->type);
-  } else {
+    if (icmp_hdr->type >= N_ICMP_TYPE) {
+        printf("[Bad Type %d] ", icmp_hdr->type);
+        return;
+    }
+
     printf("[%s] ", ICMP_TYPE[icmp_hdr->type]);
-  }
 
-  switch (icmp_hdr->type) {
-    case ICMP_TYPE_ECHO_REP:
-      /* 檢查 identifier 是否為我們設定的 0x5515（network byte order 處理） */
-      if (ntohs(icmp_hdr->id) == 0x5515) {
-        printf("Echo Reply (id=0x5515) - Host alive: ");
-        print_ip(ip_hdr->srcip, "\n");
-      } else {
-        /* 不是我們的掃描回覆，也印出基本資訊 */
-        printf("Echo Reply (id=0x%04x)\n", ntohs(icmp_hdr->id));
-      }
+    switch (icmp_hdr->type) {
+        /* ===== 方法 2：處理 Echo Reply ===== */
+        case ICMP_TYPE_ECHO_REP:
+            if (ntohs(icmp_hdr->id) == MY_ICMP_ID) {
+                printf("Echo Reply (id=0x%04x) - Host alive: %d.%d.%d.%d\n",
+                       ntohs(icmp_hdr->id),
+                       ip_hdr->srcip[0], ip_hdr->srcip[1],
+                       ip_hdr->srcip[2], ip_hdr->srcip[3]);
+            } else {
+                printf("Echo Reply (id=0x%04x) - Not our packet\n",
+                       ntohs(icmp_hdr->id));
+            }
 #if (DEBUG_ICMP_DUMP == 1)
-      print_data((uint8_t *)icmp_hdr, len);
+            print_data((uint8_t *)icmp_hdr, len);
 #endif
-      break;
+            break;
 
-    case ICMP_TYPE_ECHO_REQ:
-      /* 若需要對別人的 echo request 做回覆，可在此處加入回應程式碼 */
-      printf("\n");
+        case ICMP_TYPE_ECHO_REQ:
+            printf("Echo Request received from %d.%d.%d.%d\n",
+                   ip_hdr->srcip[0], ip_hdr->srcip[1],
+                   ip_hdr->srcip[2], ip_hdr->srcip[3]);
 #if (DEBUG_ICMP_DUMP == 1)
-      print_data((uint8_t *)icmp_hdr, len);
+            print_data((uint8_t *)icmp_hdr, len);
 #endif
-      break;
+            break;
 
-    case ICMP_TYPE_DST_UN:
-    case ICMP_TYPE_REDIR:
-    case ICMP_TYPE_TIME_EXCD:
-    default:
-      if (icmp_hdr->code >= N_ICMP_CODE)
-        printf("Bad Code(%02x)\n", (int)icmp_hdr->code);
-      else
-        printf("%s\n", ICMP_CODE[icmp_hdr->code]);
-  }
+        default:
+            if (icmp_hdr->code < N_ICMP_CODE)
+                printf("%s\n", ICMP_CODE[icmp_hdr->code]);
+            else
+                printf("Bad Code(%02x)\n", icmp_hdr->code);
+    }
 }
 
 /**
- * icmp_ping() - To send a ICMP echo request to the desired IP address.
+ * icmp_ping() - To send an ICMP echo request to the desired IP address.
  **/
 void icmp_ping(netdevice_t *p, uint8_t *dstip) {
-  uint8_t pktbuf[MAX_IP_PAYLOAD_LEN];
-  myicmp_hdr_t *icmp_hdr = (myicmp_hdr_t *)pktbuf;
-  myip_param_t ip_param;
-  int len;
+    uint8_t pktbuf[MAX_IP_PAYLOAD_LEN];
+    myicmp_hdr_t *icmp_hdr = (myicmp_hdr_t *)pktbuf;
+    myip_param_t ip_param;
+    int len;
 
-  if (dstip == NULL) dstip = defpingip;
+    if (dstip == NULL) dstip = defpingip;
 
 #if (DEBUG_ICMP == 1)
-  printf("icmp_ping(): Ping %s\n", ip_addrstr(dstip, NULL));
-#endif /* DEBUG_ICMP */
+    printf("icmp_ping(): Ping %s\n", ip_addrstr(dstip, NULL));
+#endif
 
-  SET_IP(ip_param.dstip, dstip);
-  SET_IP(ip_param.srcip, myipaddr);
-  ip_param.protocol = IP_PROTO_ICMP; /* 0x01 */
+    SET_IP(ip_param.dstip, dstip);
+    SET_IP(ip_param.srcip, myipaddr);
+    ip_param.protocol = IP_PROTO_ICMP;
 
-  /* 構造 ICMP Echo Request */
-  memset(pktbuf, 0, sizeof(pktbuf));
-  icmp_hdr->type = ICMP_TYPE_ECHO_REQ;
-  icmp_hdr->code = 0;
-  icmp_hdr->chksum = 0x0000;
+    memset(pktbuf, 0, sizeof(pktbuf));
+    icmp_hdr->type = ICMP_TYPE_ECHO_REQ;
+    icmp_hdr->code = 0;
+    icmp_hdr->chksum = 0x0000;
 
-  /* 設定 Identifier 為 0x5515（使用 network byte order）*/
-  icmp_hdr->id = htons(0x5515);
+    /* ===== 方法 3：使用自定義 ICMP ID ===== */
+    icmp_hdr->id = htons(MY_ICMP_ID);
+    icmp_hdr->seq = htons(0x0000);
 
-  /* sequence 可從 0 開始，若要每次不同可做遞增（使用 htons） */
-  icmp_hdr->seq = htons(0x0000);
-
-  len = sizeof(myicmp_hdr_t);
-  icmp_hdr->chksum = checksum((uint8_t *)icmp_hdr, len);
-  ip_send(p, &ip_param, pktbuf, len);
+    len = sizeof(myicmp_hdr_t);
+    icmp_hdr->chksum = checksum((uint8_t *)icmp_hdr, len);
+    ip_send(p, &ip_param, pktbuf, len);
 }
-

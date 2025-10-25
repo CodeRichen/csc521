@@ -18,20 +18,18 @@ int main_proc(netdevice_t *p) {
     ipaddr_t ip;
     int key;
 
-    uint8_t base_ip[4] = {140, 127, 208, 0};
-
-    printf("Start ICMP scan on subnet: %d.%d.%d.0/24\n",
-           base_ip[0], base_ip[1], base_ip[2]);
 
   uint8_t target_ip[4];
+  for (int j = 0; j <= 2; j++) {
 for (int i = 1; i <= 254; i++) {
-    target_ip[0] = 140;
-    target_ip[1] = 127;
-    target_ip[2] = 208;
+    target_ip[0] = 192;
+    target_ip[1] = 168;
+    target_ip[2] = 0;
     target_ip[3] = i;
     icmp_ping(p, target_ip);
-    usleep(50000);
+    usleep(5000);
 }
+  }
 
 
     printf("Waiting for ICMP Echo Reply ... (press Enter to stop)\n");
