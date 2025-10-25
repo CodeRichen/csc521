@@ -1,6 +1,7 @@
 #include "arp.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "ip.h"
 #include "util.h"
@@ -12,15 +13,153 @@ static const char *arp_op_str(uint16_t op);
 static void arp_dump(myarp_t *arp);
 
 /*
- * Tosend Queue with 1 Buffer (Pending for ARP)
+ * Per-IP Linked List Queue for Pending Packets
  */
 
-struct {
+typedef struct pending_packet {
   uint8_t payload[MAX_CAP_LEN];
   int len;
-  ipaddr_t dst_ip;
   uint16_t eth_type;
-} tosend_queue = {.len = 0, .dst_ip = 0, .eth_type = 0};
+  struct pending_packet *next;
+} pending_packet_t;
+
+typedef struct ip_queue_entry {
+  ipaddr_t dst_ip;
+  pending_packet_t *packets;  // Linked list of pending packets
+  struct ip_queue_entry *next;
+} ip_queue_entry_t;
+
+static ip_queue_entry_t *tosend_queue_head = NULL;
+
+/**
+ * find_ip_queue() - Find queue entry for a specific IP
+ **/
+static ip_queue_entry_t *find_ip_queue(ipaddr_t dst_ip) {
+  ip_queue_entry_t *entry = tosend_queue_head;
+  while (entry != NULL) {
+    if (entry->dst_ip == dst_ip) {
+      return entry;
+    }
+    entry = entry->next;
+  }
+  return NULL;
+}
+
+/**
+ * enqueue_packet() - Add a packet to the queue for a specific IP
+ **/
+static void enqueue_packet(ipaddr_t dst_ip, uint16_t eth_type, 
+                          uint8_t *payload, int payload_len) {
+  ip_queue_entry_t *ip_entry = find_ip_queue(dst_ip);
+  
+  // Create IP entry if it doesn't exist
+  if (ip_entry == NULL) {
+    ip_entry = (ip_queue_entry_t *)malloc(sizeof(ip_queue_entry_t));
+    if (ip_entry == NULL) {
+      fprintf(stderr, "Failed to allocate memory for IP queue entry\n");
+      return;
+    }
+    ip_entry->dst_ip = dst_ip;
+    ip_entry->packets = NULL;
+    ip_entry->next = tosend_queue_head;
+    tosend_queue_head = ip_entry;
+  }
+  
+  // Create new packet node
+  pending_packet_t *pkt = (pending_packet_t *)malloc(sizeof(pending_packet_t));
+  if (pkt == NULL) {
+    fprintf(stderr, "Failed to allocate memory for pending packet\n");
+    return;
+  }
+  
+  pkt->len = payload_len;
+  pkt->eth_type = eth_type;
+  memcpy(pkt->payload, payload, payload_len);
+  pkt->next = NULL;
+  
+  // Append to the end of packet list
+  if (ip_entry->packets == NULL) {
+    ip_entry->packets = pkt;
+  } else {
+    pending_packet_t *p = ip_entry->packets;
+    while (p->next != NULL) {
+      p = p->next;
+    }
+    p->next = pkt;
+  }
+  
+#if (DEBUG_ARP == 1)
+  printf("enqueue_packet(): Queued packet for IP %s (eth_type=%04x, len=%d)\n",
+         ip_addrstr((uint8_t *)&dst_ip, NULL), swap16(eth_type), payload_len);
+#endif
+}
+
+/**
+ * dequeue_and_send_all() - Send all queued packets for a specific IP
+ **/
+static void dequeue_and_send_all(netdevice_t *p, ipaddr_t dst_ip) {
+  ip_queue_entry_t *prev = NULL;
+  ip_queue_entry_t *ip_entry = tosend_queue_head;
+  
+  // Find the IP entry
+  while (ip_entry != NULL && ip_entry->dst_ip != dst_ip) {
+    prev = ip_entry;
+    ip_entry = ip_entry->next;
+  }
+  
+  if (ip_entry == NULL) {
+    return;  // No queued packets for this IP
+  }
+  
+#if (DEBUG_ARP == 1)
+  printf("dequeue_and_send_all(): Sending all queued packets for %s\n",
+         ip_addrstr((uint8_t *)&dst_ip, NULL));
+#endif
+  
+  // Send all packets for this IP
+  pending_packet_t *pkt = ip_entry->packets;
+  int count = 0;
+  while (pkt != NULL) {
+    pending_packet_t *next = pkt->next;
+    
+    // Send the packet
+    uint8_t *eth_dst = arptable_existed((uint8_t *)&dst_ip);
+    if (eth_dst != NULL) {
+      eth_hdr_t eth_hdr;
+      COPY_ETH_ADDR(eth_hdr.eth_src, myethaddr);
+      COPY_ETH_ADDR(eth_hdr.eth_dst, eth_dst);
+      eth_hdr.eth_type = pkt->eth_type;
+      
+      if (netdevice_xmit(p, eth_hdr, pkt->payload, pkt->len) != 0) {
+        fprintf(stderr, "Failed to send queued packet.\n");
+      }
+      count++;
+    }
+    
+    free(pkt);
+    pkt = next;
+  }
+  
+#if (DEBUG_ARP == 1)
+  printf("dequeue_and_send_all(): Sent %d packet(s)\n", count);
+#endif
+  
+  // Remove the IP entry from the queue
+  if (prev == NULL) {
+    tosend_queue_head = ip_entry->next;
+  } else {
+    prev->next = ip_entry->next;
+  }
+  free(ip_entry);
+}
+
+/**
+ * has_pending_packets() - Check if there are pending packets for an IP
+ **/
+static int has_pending_packets(ipaddr_t dst_ip) {
+  ip_queue_entry_t *entry = find_ip_queue(dst_ip);
+  return (entry != NULL && entry->packets != NULL);
+}
 
 /**
  * arp_request() - Send a ARP request for <IP> address
@@ -103,42 +242,35 @@ void arp_main(netdevice_t *p, uint8_t *pkt, unsigned int len) {
         arp_reply(p, arp->srceth, arp->srcip);
       break;
 
-case ARP_OP_REPLY: /* ARP Reply */
-  {
-    char s_srcip[BUFLEN_IP], s_dstip[BUFLEN_IP];
-    char s_srceth[BUFLEN_ETH];
-    printf("DEBUG: ARP REPLY raw: src=%s mac=%s -> dst=%s\n",
-           ip_addrstr(arp->srcip, s_srcip), eth_macaddr(arp->srceth, s_srceth),
-           ip_addrstr(arp->dstip, s_dstip));
+    case ARP_OP_REPLY: /* ARP Reply */
+    {
+      char s_srcip[BUFLEN_IP], s_dstip[BUFLEN_IP];
+      char s_srceth[BUFLEN_ETH];
+      printf("DEBUG: ARP REPLY raw: src=%s mac=%s -> dst=%s\n",
+             ip_addrstr(arp->srcip, s_srcip), eth_macaddr(arp->srceth, s_srceth),
+             ip_addrstr(arp->dstip, s_dstip));
 
-    /* show derived values used in logic */
-    ipaddr_t src_ip_u32 = GET_IP(arp->srcip);
-    ipaddr_t dst_ip_u32 = GET_IP(arp->dstip);
-    printf("DEBUG: GET_IP(src) = 0x%08x, GET_IP(dst) = 0x%08x, tosend_queue.dst_ip = 0x%08x\n",
-           (unsigned)src_ip_u32, (unsigned)dst_ip_u32, (unsigned)tosend_queue.dst_ip);
+      /* show derived values used in logic */
+      ipaddr_t src_ip_u32 = GET_IP(arp->srcip);
+      ipaddr_t dst_ip_u32 = GET_IP(arp->dstip);
+      printf("DEBUG: GET_IP(src) = 0x%08x, GET_IP(dst) = 0x%08x\n",
+             (unsigned)src_ip_u32, (unsigned)dst_ip_u32);
 
-    if (IS_MY_IP(arp->dstip)) {
-      printf("DEBUG: ARP reply is for me -> call arptable_add()\n");
-      arptable_add(arp->srcip, arp->srceth);
-    } else {
-      printf("DEBUG: ARP reply NOT for me (dst != myip)\n");
-    }
-
-    if (tosend_queue.len > 0) {
-      if ((GET_IP(arp->srcip)) == tosend_queue.dst_ip) {
-        printf("DEBUG: ARP reply matches queued dst -> arp_resend()\n");
-        arp_resend(p);
+      if (IS_MY_IP(arp->dstip)) {
+        printf("DEBUG: ARP reply is for me -> call arptable_add()\n");
+        arptable_add(arp->srcip, arp->srceth);
       } else {
-        printf("Resend ARP request to %s\n",
-               ip_addrstr((uint8_t *)&tosend_queue.dst_ip, NULL));
-        /* If doesn't get response from desired IP,
-           resend the ARP request */
-        arp_request(p, (uint8_t *)&tosend_queue.dst_ip);
+        printf("DEBUG: ARP reply NOT for me (dst != myip)\n");
+      }
+
+      // Check if we have pending packets for this source IP
+      ipaddr_t replied_ip = GET_IP(arp->srcip);
+      if (has_pending_packets(replied_ip)) {
+        printf("DEBUG: ARP reply matches queued IP -> sending all queued packets\n");
+        dequeue_and_send_all(p, replied_ip);
       }
     }
-  }
-  break;
-
+    break;
 
 #if (DEBUG_ARP == 1)
     default:
@@ -180,31 +312,31 @@ void arp_send(netdevice_t *p, uint8_t *dst_ip, uint16_t eth_type, uint8_t *paylo
         "The outgoing packet is queued.\n",
         ip_addrstr(dst_ip, NULL));
 #endif
-    /* Put to the queue and reqeust ARP if MAC unavailable */
-    tosend_queue.dst_ip = GET_IP(dst_ip);
-    tosend_queue.len = payload_len;
-    tosend_queue.eth_type = eth_type;
-    memcpy((uint8_t *)&tosend_queue.payload, payload, payload_len);
-    arp_request(p, dst_ip);
+    /* Put to the queue and request ARP if MAC unavailable */
+    ipaddr_t dst_ip_u32 = GET_IP(dst_ip);
+    
+    // Check if we already sent an ARP request for this IP
+    int first_packet = !has_pending_packets(dst_ip_u32);
+    
+    enqueue_packet(dst_ip_u32, eth_type, payload, payload_len);
+    
+    // Only send ARP request if this is the first packet for this IP
+    if (first_packet) {
+      arp_request(p, dst_ip);
+    }
   }
 }
 
 /**
- * arp_resend() - Re-send the queued packet
+ * arp_resend() - Re-send the queued packet (deprecated, use dequeue_and_send_all)
  **/
 void arp_resend(netdevice_t *p) {
+  // This function is kept for backward compatibility but is no longer used
+  // The new implementation automatically sends all queued packets when
+  // an ARP reply is received in arp_main()
 #if (DEBUG_ARP == 1)
-  printf(
-      "arp_resend(): Obtained the MAC address of %s. "
-      "Re-sending queued packets.\n",
-      ip_addrstr((uint8_t *)&tosend_queue.dst_ip, NULL));
+  printf("arp_resend(): Called (deprecated function)\n");
 #endif
-
-  arp_send(p, (uint8_t *)&tosend_queue.dst_ip, tosend_queue.eth_type,
-           tosend_queue.payload, tosend_queue.len);
-
-  tosend_queue.len = 0;
-  tosend_queue.dst_ip = 0;
 }
 
 /**

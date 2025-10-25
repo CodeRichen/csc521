@@ -19,7 +19,7 @@ int main_proc(netdevice_t *p) {
     int key;
 
 
-  uint8_t target_ip[4];
+  uint8_t target_ip[4]; //TODO 資工系子網: 140.127.208.0/24
   for (int j = 0; j <= 2; j++) {
 for (int i = 1; i <= 254; i++) {
     target_ip[0] = 192;
