@@ -1,0 +1,7 @@
+# Nmap 7.80 scan initiated Thu Oct 30 09:55:00 2025 as: nmap -sn -oG alive.txt 140.127.208.0/24
+Host: 140.127.208.18 ()	Status: Up
+Host: 140.127.208.52 ()	Status: Up
+Host: 140.127.208.70 ()	Status: Up
+Host: 140.127.208.128 ()	Status: Up
+Host: 140.127.208.231 ()	Status: Up
+# Nmap done at Thu Oct 30 09:55:19 2025 -- 256 IP addresses (5 hosts up) scanned in 18.81 seconds
