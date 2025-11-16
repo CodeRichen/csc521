@@ -9,7 +9,7 @@
 #include "util.h"
 
 /*
- * udp_checksum() - Calculate checksum of UDP datagram with IPv4 pseudo header
+ * 🔧 修正：與 TCP 相同的 checksum 問題
  */
 static uint16_t udp_checksum(myip_param_t *ip_param, uint8_t *udp_pkt) {
   myudp_hdr_t *udp_hdr = (myudp_hdr_t *)udp_pkt;
@@ -36,9 +36,6 @@ static uint16_t udp_checksum(myip_param_t *ip_param, uint8_t *udp_pkt) {
   return newchksum;
 }
 
-/*
- * udp_main(): The main procedure for incoming UDP datagrams
- */
 void udp_main(netdevice_t *p, uint8_t *pkt, int len) {
   myip_hdr_t *ip_hdr;
   myudp_hdr_t *udp_hdr;
@@ -55,7 +52,7 @@ void udp_main(netdevice_t *p, uint8_t *pkt, int len) {
 
 #if (DEBUG_UDP == 1 && DEBUG_UDP_FILTER == 1)
   if (swap16(udp_hdr->dstport) != UDP_FILTER_PORT) return;
-#endif  // DEBUG_UDP == 1 && DEBUG_UDP_FILTER == 1
+#endif
 
 #if (DEBUG_CHECKSUM == 1)
   myip_param_t ip_param;
@@ -65,20 +62,21 @@ void udp_main(netdevice_t *p, uint8_t *pkt, int len) {
   uint16_t chk = udp_checksum(&ip_param, pkt);
 #else
   uint16_t chk = 0;
-#endif /* DEBUG_CHECKSUM */
+#endif
 
   uint16_t srcport, dstport;
-
   srcport = swap16(udp_hdr->srcport);
   dstport = swap16(udp_hdr->dstport);
 
 #if (DEBUG_UDP == 1 || DEBUG_CHECKSUM == 1)
+  // 🔧 修正：直接比較 checksum，不做 swap
   printf("UDP: %d->%d, Len=%d, chksum=%04x/%04x\n", srcport, dstport, len,
-         (int)udp_hdr->chksum, chk);
-#endif /* DEBUG_UDP == 1 || DEBUG_CHECKSUM == 1*/
+         udp_hdr->chksum, chk);
+#endif
+
 #if (DEBUG_UDP_DUMP == 1)
   print_data((uint8_t *)pkt, len);
-#endif /* DEBUG_UDP_DUMP */
+#endif
 
   switch (srcport) {
     case UDP_PORT_DNS:
@@ -87,9 +85,6 @@ void udp_main(netdevice_t *p, uint8_t *pkt, int len) {
   }
 }
 
-/*
- * udp_send() - Send out UDP datagram with specified UDP port and IP addresse
- */
 void udp_send(netdevice_t *p, myudp_param_t udp_param, uint8_t *payload,
               int payload_len) {
   int hdr_len = sizeof(myudp_hdr_t);
@@ -99,7 +94,7 @@ void udp_send(netdevice_t *p, myudp_param_t udp_param, uint8_t *payload,
   myip_param_t *ip_param;
 
   ip_param = &udp_param.ip;
-  ip_param->protocol = IP_PROTO_UDP; /* 0x11 */
+  ip_param->protocol = IP_PROTO_UDP;
   COPY_IPV4_ADDR(ip_param->srcip, myipaddr);
 
   udp_hdr->srcport = swap16(udp_param.srcport);
@@ -114,9 +109,11 @@ void udp_send(netdevice_t *p, myudp_param_t udp_param, uint8_t *payload,
   printf("udp_send(): %d->%s:%d, Len=%d, chksum=%04x\n", (int)udp_param.srcport,
          ip_addrstr(ip_param->dstip, NULL), (int)udp_param.dstport, pkt_len,
          udp_hdr->chksum);
-#endif /* DEBUG_UDP */
+#endif
+
 #if (DEBUG_UDP_DUMP == 1)
   print_data((uint8_t *)pkt, pkt_len);
-#endif /* DEBUG_UDP_DUMP */
+#endif
+  
   ip_send(p, ip_param, pkt, pkt_len);
 }

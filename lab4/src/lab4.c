@@ -9,158 +9,188 @@
 #include "tcp.h"
 #include "util.h"
 
-extern char *defdnsquery;          // 預設 DNS 查詢的主機名稱（例如 csie.nuk.edu.tw）
-extern uint16_t tcp_filter_port;   // 預設要監聽或過濾的 TCP port
+extern char *defdnsquery;
+extern uint16_t tcp_filter_port;
 
 /**
- * 當有 TCP 封包被捕獲時的 callback handler
- * 會在 tcp_main() → tcp_set_raw_handler() 被呼叫時註冊
+ * 🔧 改進：完整的 TCP callback handler
  */
 void rcvd_raw_tcp(myip_hdr_t *ip_hdr, mytcp_hdr_t *tcp_hdr, uint8_t *data,
                   int len) {
-  // 若目標 port 不是指定的 tcp_filter_port，則忽略該封包
   if (swap16(tcp_hdr->dstport) != tcp_filter_port) return;
 
-  // 如果封包是 TCP 的 SYN + ACK
-  if (tcp_hdr->flags & TCP_FG_SYN && tcp_hdr->flags & TCP_FG_ACK) {
-    printf("Received SYN-ACK from %s:%d\n", ip_addrstr(ip_hdr->srcip, NULL),
-           swap16(tcp_hdr->srcport));
-  }
+  uint16_t remote_port = swap16(tcp_hdr->srcport);
+  char *remote_ip = ip_addrstr(ip_hdr->srcip, NULL);
 
-  // 如果封包是 TCP 的 RST（重置）
-  if (tcp_hdr->flags & TCP_FG_RST) {
-    printf("Received RST from %s:%d\n", ip_addrstr(ip_hdr->srcip, NULL),
-           swap16(tcp_hdr->srcport));
+  // SYN-ACK: 三向交握的第二步
+  if ((tcp_hdr->flags & TCP_FG_SYN) && (tcp_hdr->flags & TCP_FG_ACK)) {
+    printf("✓ Received SYN-ACK from %s:%d\n", remote_ip, remote_port);
+    printf("  Server is LISTENING and ready to accept connection\n");
+  }
+  // RST: 連線被拒絕
+  else if (tcp_hdr->flags & TCP_FG_RST) {
+    printf("✗ Received RST from %s:%d\n", remote_ip, remote_port);
+    printf("  Port is CLOSED or connection rejected\n");
+  }
+  // FIN: 對方關閉連線
+  else if (tcp_hdr->flags & TCP_FG_FIN) {
+    printf("→ Received FIN from %s:%d\n", remote_ip, remote_port);
+    printf("  Remote side closing connection\n");
+  }
+  // 純 ACK
+  else if ((tcp_hdr->flags & TCP_FG_ACK) && !(tcp_hdr->flags & TCP_FG_SYN)) {
+    // 一般不印出純 ACK，因為會有很多
+  }
+  // PSH: 有資料推送
+  else if (tcp_hdr->flags & TCP_FG_PSH) {
+    printf("→ Received data from %s:%d (%d bytes)\n", 
+           remote_ip, remote_port, len);
   }
 }
 
 /**
- * main_proc() - 主執行緒
- * 負責：
- *   1. 傳送 ARP/DNS/ICMP/TCP 請求
- *   2. 從網卡讀取封包
- *   3. 根據鍵盤輸入發送 ping 或 DNS 查詢
+ * 🔧 改進：加入更好的錯誤處理與提示
  */
 int main_proc(netdevice_t *p) {
   char buf[MAX_LINEBUF];
   ipaddr_t ip;
   int key;
 
-  /* =============================
-   * 1️⃣ 送出 ARP Request
-   * ============================= */
-#if (FG_ARP_SEND_REQUEST == 1)
-  arp_request(p, NULL);  // 若開啟該 flag，會對預設 IP 傳送 ARP request
-#endif /* FG_ARP_REQUEST */
+  printf("\n=== Network Stack Initialization ===\n");
 
-  /* =============================
-   * 2️⃣ 執行 DNS 查詢與 TCP/ICMP 測試
-   * ============================= */
+  /* ARP Request */
+#if (FG_ARP_SEND_REQUEST == 1)
+  printf("→ Sending ARP request...\n");
+  arp_request(p, NULL);
+#endif
+
+  /* DNS Query & Tests */
 #if (FG_DNS_QUERY == 1)
-  // 向 DNS 伺服器查詢 defdnsquery (如 csie.nuk.edu.tw)
+  printf("→ Resolving DNS: %s\n", defdnsquery);
   ip = resolve(p, defdnsquery);
-  printf("main_proc(): %s = %s\n", defdnsquery,
-         ip_addrstr((uint8_t *)&ip, NULL));
+  
+  if (ip == 0) {
+    printf("✗ DNS resolution FAILED for %s\n", defdnsquery);
+    printf("  Possible reasons:\n");
+    printf("  1. Domain does not exist\n");
+    printf("  2. DNS server is unreachable\n");
+    printf("  3. No A record for this domain (might have only AAAA/CNAME)\n");
+    printf("  \n");
+    printf("  Suggestion: Try a different domain (e.g., google.com, nuk.edu.tw)\n");
+  } else {
+    printf("✓ Resolved: %s = %s\n", defdnsquery,
+           ip_addrstr((uint8_t *)&ip, NULL));
 
 #if (FG_ICMP_SEND_REQUEST == 1)
-  // 執行 ICMP ping
-  icmp_ping(p, (uint8_t *)&ip);
-#endif  // FG_ICMP_SEND_REQUEST
+    printf("→ Sending ICMP ping to %s\n", ip_addrstr((uint8_t *)&ip, NULL));
+    icmp_ping(p, (uint8_t *)&ip);
+#endif
 
 #if (FG_TCP_SEND_SYN == 1)
-  // 嘗試建立 TCP 連線（只送 SYN）
-  mytcp_param_t tcp_param;
-  COPY_IPV4_ADDR(tcp_param.ip.dstip, (uint8_t *)&ip);  // 設定目標 IP
-  tcp_param.srcport = tcp_filter_port;  // 本機來源 port
-  tcp_param.dstport = 80;               // HTTP 預設 port
+    printf("→ Attempting TCP connection to %s:80\n",
+           ip_addrstr((uint8_t *)&ip, NULL));
+    
+    mytcp_param_t tcp_param;
+    COPY_IPV4_ADDR(tcp_param.ip.dstip, (uint8_t *)&ip);
+    tcp_param.srcport = tcp_filter_port;
+    tcp_param.dstport = 80;
 
-  tcp_syn(p, tcp_param, NULL, 0);       // 傳送 SYN 封包
-#endif  // FG_TCP_SEND_SYN
-#endif  // FG_DNS_QUERY
+    tcp_syn(p, tcp_param, NULL, 0);
+    printf("  Waiting for response...\n");
+#endif
+  }
+#endif
 
-  /* =============================
-   * 3️⃣ 持續讀取封包（主迴圈）
-   * ============================= */
+  printf("\n=== Packet Capture Started ===\n");
+  printf("Commands:\n");
+  printf("  - Type IP or hostname to ping/connect\n");
+  printf("  - Press Enter to exit\n");
+  printf("\n");
+
+  /* Main Loop */
+  int packet_count = 0;
   while (1) {
-    /*
-     * 處理封包緩衝區中收到的封包
-     */
     if (netdevice_rx(p) == -1) {
-      break;  // 若接收錯誤則離開
+      fprintf(stderr, "✗ Error receiving packets\n");
+      break;
     }
+    packet_count++;
 
-    /*----------------------------------*
-     * 可以在此區插入其他自訂任務
-     *----------------------------------*/
-
-    /* 使用者是否按下鍵盤輸入 */
+    /* Keyboard input */
     if (!readready()) continue;
-    if ((key = fgetc(stdin)) == '\n') break;  // 按下 Enter 離開
+    if ((key = fgetc(stdin)) == '\n') {
+      printf("\n=== Exiting (processed %d packets) ===\n", packet_count);
+      break;
+    }
     ungetc(key, stdin);
     if (fgets(buf, MAX_LINEBUF, stdin) == NULL) break;
-    trimright(buf);  // 移除換行字元
+    trimright(buf);
 
-    // 嘗試將輸入的文字解析為 IP 或主機名稱
-    if ((ip = retrieve_ip_addr(buf)) != 0 || (ip = resolve(p, buf)) != 0) {
-      printf("main_proc(): %s = %s\n", buf, ip_addrstr((uint8_t *)&ip, NULL));
+    printf("\n→ Query: %s\n", buf);
+
+    /* Resolve IP */
+    if ((ip = retrieve_ip_addr(buf)) != 0) {
+      printf("✓ Valid IP: %s\n", ip_addrstr((uint8_t *)&ip, NULL));
+    } else if ((ip = resolve(p, buf)) != 0) {
+      printf("✓ Resolved: %s = %s\n", buf, ip_addrstr((uint8_t *)&ip, NULL));
+    } else {
+      printf("✗ Failed to resolve: %s\n", buf);
+      printf("  Check domain name or try direct IP address\n\n");
+      continue;
+    }
 
 #if (FG_DNS_DO_PING == 1)
-      icmp_ping(p, (uint8_t *)&ip);
-#endif  // FG_DNS_DO_PING
+    printf("→ Pinging %s...\n", ip_addrstr((uint8_t *)&ip, NULL));
+    icmp_ping(p, (uint8_t *)&ip);
+#endif
 
 #if (FG_TCP_SEND_SYN == 1)
-      // 若定義開啟 TCP 功能則發送 SYN
-      mytcp_param_t tcp_param;
-      COPY_IPV4_ADDR(tcp_param.ip.dstip, (uint8_t *)&ip);
-      tcp_param.srcport = tcp_filter_port;
-      tcp_param.dstport = 80;
-      tcp_syn(p, tcp_param, NULL, 0);
-#endif  // FG_TCP_SEND_SYN
-    } else {
-      printf("Invalid IP (Enter to exit)\n");
-    }
+    printf("→ TCP SYN to %s:80...\n", ip_addrstr((uint8_t *)&ip, NULL));
+    mytcp_param_t tcp_param;
+    COPY_IPV4_ADDR(tcp_param.ip.dstip, (uint8_t *)&ip);
+    tcp_param.srcport = tcp_filter_port;
+    tcp_param.dstport = 80;
+    tcp_syn(p, tcp_param, NULL, 0);
+#endif
+    printf("\n");
   }
 
   return 0;
 }
 
-/****
- **** MAIN ENTRY（程式進入點）
- ****/
 int main(int argc, char *argv[]) {
   char devname[MAX_LINEBUF], errbuf[PCAP_ERRBUF_SIZE];
   netdevice_t *p;
 
-  /*
-   * 取得網卡名稱 (ex: enp0s3)
-   */
+  /* Get device name */
   if (argc == 2) {
     strcpy(devname, argv[1]);
   } else if (netdevice_getdevice(0, devname) == NETDEVICE_ERR) {
+    fprintf(stderr, "✗ No network device found\n");
     return -1;
   }
+
+  printf("Loading network configuration for %s...\n", devname);
   load_network_config(devname);
-  /*
-   * 開啟指定網卡介面
-   */
+
+  /* Open device */
   if ((p = netdevice_open(devname, errbuf)) == NULL) {
-    fprintf(stderr, "Failed to open capture interface\n\t%s\n", errbuf);
+    fprintf(stderr, "✗ Failed to open %s\n  %s\n", devname, errbuf);
     return -1;
   }
-  printf("Capturing packets on interface %s\n", devname);
+  printf("✓ Capturing packets on interface %s\n", devname);
 
-  /*
-   * 註冊各種協定封包處理 callback
-   */
-  netdevice_add_proto(p, ETH_ARP, (ptype_handler)&arp_main);  // 處理 ARP 封包
-  netdevice_add_proto(p, ETH_IP, (ptype_handler)&ip_main);    // 處理 IP 封包
-  tcp_set_raw_handler((tcp_raw_handler)&rcvd_raw_tcp);        // 設定 TCP raw handler
+  /* Register protocol handlers */
+  netdevice_add_proto(p, ETH_ARP, (ptype_handler)&arp_main);
+  netdevice_add_proto(p, ETH_IP, (ptype_handler)&ip_main);
+  tcp_set_raw_handler((tcp_raw_handler)&rcvd_raw_tcp);
 
-  // 進入主要封包處理流程
-  main_proc(p);
+  /* Main processing */
+  int ret = main_proc(p);
 
-  /*
-   * 收尾動作，關閉裝置
-   */
+  /* Cleanup */
   netdevice_close(p);
+  printf("✓ Network device closed\n");
+
+  return ret;
 }
