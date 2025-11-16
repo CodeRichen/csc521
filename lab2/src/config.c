@@ -33,12 +33,16 @@ void load_network_config(const char *ifname) {
     }
 
     // 取得 IP
-    if (ioctl(fd, SIOCGIFADDR, &ifr) == 0) {
-        struct sockaddr_in *ipaddr = (struct sockaddr_in *)&ifr.ifr_addr;
-        memcpy(myipaddr, &ipaddr->sin_addr, 4);
-    } else {
-        perror("ioctl(SIOCGIFADDR)");
-    }
+    // if (ioctl(fd, SIOCGIFADDR, &ifr) == 0) {
+    //     struct sockaddr_in *ipaddr = (struct sockaddr_in *)&ifr.ifr_addr;
+    //     memcpy(myipaddr, &ipaddr->sin_addr, 4);
+    // } else {
+    //     perror("ioctl(SIOCGIFADDR)");
+    // }
+        myipaddr[0] = 192;
+        myipaddr[1] = 168;
+        myipaddr[2] = 55;
+        myipaddr[3] = 15;
 
     close(fd);
 
