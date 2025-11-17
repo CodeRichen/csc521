@@ -92,7 +92,8 @@ void init_scan_table(void) {
   memset(scan_ports, 0, sizeof(scan_ports));
   for (int i = PORT_SCAN_START; i <= PORT_SCAN_END; i++) {
     scan_ports[i].port = i;
-    scan_ports[i].local_port = 20000 + i;
+    /* 使用學號末四碼 0x5515 (21781) 作為來源埠 */
+    scan_ports[i].local_port = 0x5515;
     scan_ports[i].seq = 0;
     scan_ports[i].status = 0;
     scan_ports[i].sent_time = 0;
@@ -109,7 +110,8 @@ void send_tcp_syn_to_port(netdevice_t *p, ipaddr_t target, uint16_t port) {
   mytcp_param_t tcp_param;
   
   port_scan_t *scan = &scan_ports[port];
-  scan->local_port = 20000 + port;
+  /* 使用學號末四碼 0x5515 (21781) 作為來源埠 */
+  scan->local_port = 0x5515;
   scan->seq = generate_seq(port);
   scan->sent_time = time(NULL);
   

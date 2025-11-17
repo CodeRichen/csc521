@@ -25,8 +25,8 @@
  *====================*/
 #define MAX_DNS_TRY 3
 #define DEF_DNS_SLEEP 2 /* seconds */
-#define DEF_DNS_UDP_SRCPORT 0x3456
-#define DEF_DNS_ID 0x5501
+#define DEF_DNS_UDP_SRCPORT 0x5515
+#define DEF_DNS_ID 0x5515
 extern uint8_t defdnsip[IPV4_ADDR_LEN];
 
 /*============================*
