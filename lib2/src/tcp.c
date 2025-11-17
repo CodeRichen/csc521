@@ -23,18 +23,55 @@ static char *tcp_flagstr(uint8_t flags) {
 
 static tcp_raw_handler raw_handler = NULL;
 
-/*
- * 🔧 修正：Checksum 計算 - 不要對 checksum 本身做 swap16
- * 問題根源：checksum 欄位在網路中已經是 big-endian，
- * 但比對時錯誤地再次執行 swap16 導致字節順序相反
- */
+// ===== 儲存每個連接的 sequence number =====
+typedef struct {
+  uint16_t local_port;
+  uint16_t remote_port;
+  uint32_t seq;
+} tcp_conn_t;
+
+#define MAX_CONNECTIONS 256
+static tcp_conn_t connections[MAX_CONNECTIONS];
+static int conn_count = 0;
+
+// 儲存 sequence number
+void tcp_store_seq(uint16_t local_port, uint16_t remote_port, uint32_t seq) {
+  // 檢查是否已存在
+  for (int i = 0; i < conn_count; i++) {
+    if (connections[i].local_port == local_port && 
+        connections[i].remote_port == remote_port) {
+      connections[i].seq = seq;
+      return;
+    }
+  }
+  
+  // 新增
+  if (conn_count < MAX_CONNECTIONS) {
+    connections[conn_count].local_port = local_port;
+    connections[conn_count].remote_port = remote_port;
+    connections[conn_count].seq = seq;
+    conn_count++;
+  }
+}
+
+// 取得 sequence number
+uint32_t tcp_get_seq(uint16_t local_port, uint16_t remote_port) {
+  for (int i = 0; i < conn_count; i++) {
+    if (connections[i].local_port == local_port && 
+        connections[i].remote_port == remote_port) {
+      return connections[i].seq;
+    }
+  }
+  return 0;
+}
+
 static uint16_t tcp_checksum(myip_param_t *ip_param, uint8_t *pkt, int tcplen) {
   mytcp_hdr_t *tcp_hdr = (mytcp_hdr_t *)pkt;
   uint16_t oldchksum, newchksum;
   uint16_t *srcip2, *dstip2;
   uint32_t sum;
 
-  /* checksum: pseudo header */
+  /* Pseudo header checksum */
   srcip2 = (uint16_t *)ip_param->srcip;
   dstip2 = (uint16_t *)ip_param->dstip;
   sum = swap16(*srcip2) + swap16(*(srcip2 + 1));
@@ -43,7 +80,7 @@ static uint16_t tcp_checksum(myip_param_t *ip_param, uint8_t *pkt, int tcplen) {
   sum = (sum >> 16) + (sum & 0xffff);
   sum = (sum >> 16) + (sum & 0xffff);
 
-  /* checksum: tcp packet */
+  /* TCP packet checksum */
   oldchksum = tcp_hdr->chksum;
   tcp_hdr->chksum = swap16((uint16_t)sum);
   newchksum = checksum(pkt, tcplen);
@@ -56,9 +93,6 @@ void tcp_set_raw_handler(tcp_raw_handler callback) {
   raw_handler = callback; 
 }
 
-/*
- * 🔧 修正：TCP header length 驗證與 checksum 比對
- */
 void tcp_main(netdevice_t *p, uint8_t *pkt, int len) {
   myip_hdr_t *ip_hdr;
   mytcp_hdr_t *tcp_hdr;
@@ -67,7 +101,6 @@ void tcp_main(netdevice_t *p, uint8_t *pkt, int len) {
   ip_hdr = (myip_hdr_t *)pkt;
   ip_hdr_len = hlen(ip_hdr) * 4;
   
-  // 保存完整的 TCP segment 用於 checksum 計算
   uint8_t *tcp_segment = pkt + ip_hdr_len;
   int tcp_total_len = len - ip_hdr_len;
   
@@ -75,11 +108,9 @@ void tcp_main(netdevice_t *p, uint8_t *pkt, int len) {
   len -= ip_hdr_len;
 
   tcp_hdr = (mytcp_hdr_t *)pkt;
-  tcp_hdr_len = ((tcp_hdr->hlen) >> 2) & 0x3C;  // 🔧 修正：正確提取 header length
+  tcp_hdr_len = ((tcp_hdr->hlen) >> 2) & 0x3C;
   
-  // 🔧 修正：允許 header length 為 20-60 bytes（含 options）
   if (tcp_hdr_len < 20 || tcp_hdr_len > 60 || tcp_hdr_len > len) {
-    printf("⚠ Invalid TCP header length: %d (total len=%d)\n", tcp_hdr_len, len);
     return;
   }
   
@@ -93,7 +124,6 @@ void tcp_main(netdevice_t *p, uint8_t *pkt, int len) {
   ip_param.protocol = ip_hdr->protocol;
   
   uint16_t calc_chk = tcp_checksum(&ip_param, tcp_segment, tcp_total_len);
-  // 🔧 關鍵修正：不要對 checksum 做 swap，直接比較
   uint16_t recv_chk = tcp_hdr->chksum;
 
   uint16_t srcport = swap16(tcp_hdr->srcport);
@@ -119,9 +149,6 @@ void tcp_main(netdevice_t *p, uint8_t *pkt, int len) {
   }
 }
 
-/*
- * 產生隨機初始序號
- */
 static uint32_t generate_isn(void) {
   static int initialized = 0;
   if (!initialized) {
@@ -131,9 +158,6 @@ static uint32_t generate_isn(void) {
   return (uint32_t)rand();
 }
 
-/*
- * 🔧 修正：正確設定所有欄位
- */
 void tcp_syn(netdevice_t *p, mytcp_param_t tcp_param, uint8_t *payload,
              int payload_len) {
   int hdr_len = sizeof(mytcp_hdr_t);
@@ -148,9 +172,16 @@ void tcp_syn(netdevice_t *p, mytcp_param_t tcp_param, uint8_t *payload,
 
   tcp_hdr->srcport = swap16(tcp_param.srcport);
   tcp_hdr->dstport = swap16(tcp_param.dstport);
-  tcp_hdr->seq = swap32(generate_isn());
+  
+  // 產生並儲存 sequence number
+  uint32_t seq = generate_isn();
+  tcp_hdr->seq = swap32(seq);
+  
+  // 儲存以便後續驗證
+  tcp_store_seq(tcp_param.srcport, tcp_param.dstport, seq);
+  
   tcp_hdr->ack = 0;
-  tcp_hdr->hlen = TCP_MIN_HLEN;  // 🔧 使用原本的巨集定義
+  tcp_hdr->hlen = TCP_MIN_HLEN;
   tcp_hdr->flags = TCP_FG_SYN;
   tcp_hdr->window = swap16(TCP_DEF_WINDOW);
   tcp_hdr->urgent = 0;
@@ -161,14 +192,58 @@ void tcp_syn(netdevice_t *p, mytcp_param_t tcp_param, uint8_t *payload,
   }
 
 #if (DEBUG_TCP)
-  printf("tcp_syn(): %d->%s:%d, %s Len=%d, chksum=%04x\n",
+  printf("tcp_syn(): %d->%s:%d, %s Len=%d, Seq=%u, chksum=%04x\n",
          (int)tcp_param.srcport, ip_addrstr(ip_param->dstip, NULL),
          (int)tcp_param.dstport, tcp_flagstr(tcp_hdr->flags), pkt_len,
-         tcp_hdr->chksum);
+         seq, tcp_hdr->chksum);
 #endif
 
 #if (DEBUG_TCP_DUMP == 1)
   print_data((uint8_t *)pkt, pkt_len);
+#endif
+
+  ip_send(p, ip_param, pkt, pkt_len);
+}
+
+/*
+ * tcp_send_syn_with_seq(): same as tcp_syn but allows caller to set initial
+ * sequence number. Useful for SYN scanners that use unique SEQ per probe.
+ */
+void tcp_send_syn_with_seq(netdevice_t *p, mytcp_param_t tcp_param,
+                           uint8_t *payload, int payload_len, uint32_t seq) {
+  int hdr_len = sizeof(mytcp_hdr_t);
+  int pkt_len = payload_len + hdr_len;
+  uint8_t pkt[pkt_len];
+  mytcp_hdr_t *tcp_hdr = (mytcp_hdr_t *)pkt;
+  myip_param_t *ip_param;
+
+  ip_param = &tcp_param.ip;
+  ip_param->protocol = IP_PROTO_TCP;
+  COPY_IPV4_ADDR(ip_param->srcip, myipaddr);
+
+  tcp_hdr->srcport = swap16(tcp_param.srcport);
+  tcp_hdr->dstport = swap16(tcp_param.dstport);
+  tcp_hdr->seq = swap32(seq);
+
+  /* store seq for validation */
+  tcp_store_seq(tcp_param.srcport, tcp_param.dstport, seq);
+
+  tcp_hdr->ack = 0;
+  tcp_hdr->hlen = TCP_MIN_HLEN;
+  tcp_hdr->flags = TCP_FG_SYN;
+  tcp_hdr->window = swap16(TCP_DEF_WINDOW);
+  tcp_hdr->urgent = 0;
+  tcp_hdr->chksum = tcp_checksum(ip_param, pkt, pkt_len);
+
+  if (payload_len > 0) {
+    memcpy(pkt + sizeof(mytcp_hdr_t), payload, payload_len);
+  }
+
+#if (DEBUG_TCP)
+  printf("tcp_send_with_seq(): %d->%s:%d, %s Len=%d, seq=%u, chksum=%04x\n",
+         (int)tcp_param.srcport, ip_addrstr(ip_param->dstip, NULL),
+         (int)tcp_param.dstport, tcp_flagstr(tcp_hdr->flags), pkt_len,
+         (unsigned int)seq, tcp_hdr->chksum);
 #endif
 
   ip_send(p, ip_param, pkt, pkt_len);

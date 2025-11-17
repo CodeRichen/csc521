@@ -166,6 +166,7 @@ static int dns_packdom(byte *dst, char *src) {
  * dns_sendom() - put together a domain lookup packet and send it
  *	. uses port 53, num is used as identifier
  */
+
 static void dns_sendom(netdevice_t *p, char *mname, uint8_t *nameserver) {
   mydns_t question;
   struct qpart *question_part;
@@ -176,8 +177,9 @@ static void dns_sendom(netdevice_t *p, char *mname, uint8_t *nameserver) {
 
   strcpy(namebuf, mname);
 
-  dns_qinit(&question); /* initialize some flag fields */
-  question.header.ident = swap16(DEF_DNS_ID);
+  dns_qinit(&question);
+  // 🔧 修正：使用學號末四碼作為 DNS ID
+  question.header.ident = swap16(0x5515);  // 改用學號而非 DEF_DNS_ID
 
   domlen = dns_packdom(question.payload, namebuf);
   question_part = (struct qpart *)(question.payload + domlen);
@@ -189,7 +191,7 @@ static void dns_sendom(netdevice_t *p, char *mname, uint8_t *nameserver) {
 
   myudp_param_t udp_param;
   udp_param.dstport = UDP_PORT_DNS;
-  udp_param.srcport = DEF_DNS_UDP_SRCPORT;
+  udp_param.srcport = 0x5515;  // 🔧 修正：UDP source port 也使用學號
   COPY_IPV4_ADDR(udp_param.ip.dstip, nameserver);
 
   udp_send(p, udp_param, (uint8_t *)&question, ulen);

@@ -19,9 +19,8 @@
     uint8_t defpingip[4]  = {140, 127, 208, 18};  // 系網預設目標
 
     uint8_t defdnsip[4]   = {8, 8, 8, 8};         // 預設 DNS
-    char *defdnsquery     = "google.com";  // 預設 DNS 查詢主機名
-
-    uint16_t tcp_filter_port = 0x5678;
+    char *defdnsquery     = "csie.nuk.edu.tw";  // 🔧 改為資工系網域
+    uint16_t tcp_filter_port = 0x5515;  // 🔧 修正為學號末四碼
 
     /* ================================
     * 載入網卡設定

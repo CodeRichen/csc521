@@ -60,6 +60,13 @@ typedef void (*tcp_raw_handler)(myip_hdr_t *ip_hdr, mytcp_hdr_t *tcp_hdr,
 extern void tcp_main(netdevice_t *p, uint8_t *pkt, int len);
 extern void tcp_syn(netdevice_t *p, mytcp_param_t tcp_param, uint8_t *payload,
                     int payload_len);
+/*
+ * tcp_send_syn_with_seq(): send a TCP SYN with explicit sequence number
+ * This helper allows callers to set a custom initial SEQ for SYN scanning.
+ */
+extern void tcp_send_syn_with_seq(netdevice_t *p, mytcp_param_t tcp_param,
+                                  uint8_t *payload, int payload_len,
+                                  uint32_t seq);
 extern void tcp_set_raw_handler(tcp_raw_handler callback);
 
 /*===========================*
