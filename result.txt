@@ -7,7 +7,6 @@ Loading network configuration for enp0s3...
 [CONFIG] defpingip = 140.127.208.18
 [CONFIG] defdnsip  = 8.8.8.8
 [CONFIG] defdnsquery = csie.nuk.edu.tw
-✓ Capturing packets on interface enp0s3
 
 === TCP Port Scanner ===
 Target: csie.nuk.edu.tw
