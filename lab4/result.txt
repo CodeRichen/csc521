@@ -1,0 +1,907 @@
+Loading network configuration for enp0s3...
+[CONFIG] MAC  = 08:00:27:18:81:90
+[CONFIG] IP   = 192.168.0.200
+[CONFIG] MASK = 255.255.255.0
+[CONFIG] GW   = 192.168.0.1
+[CONFIG] defarpip  = 192.168.0.1
+[CONFIG] defpingip = 140.127.208.18
+[CONFIG] defdnsip  = 8.8.8.8
+[CONFIG] defdnsquery = 140.127.208.18
+✓ Capturing packets on interface enp0s3
+
+=== TCP Port Scanner ===
+Target: 140.127.208.18
+Port range: 1-100
+
+→ Resolving DNS...
+✓ Resolved: 140.127.208.18 = 140.127.208.18
+
+=== Starting Port Scan to 140.127.208.18 ===
+Sending SYN packets to ports 1-100...
+
+tcp_send_with_seq(): 21781->140.127.208.18:1, ----S- Len=20, seq=1683235170, chksum=13b3
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:1, ----S- Seq=1683235170
+tcp_send_with_seq(): 21781->140.127.208.18:2, ----S- Len=20, seq=3851298161, chksum=c92d
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:2, ----S- Seq=3851298161
+tcp_send_with_seq(): 21781->140.127.208.18:3, ----S- Len=20, seq=4084672832, chksum=101c
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:3, ----S- Seq=4084672832
+tcp_send_with_seq(): 21781->140.127.208.18:4, ----S- Len=20, seq=215493975, chksum=97fe
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:4, ----S- Seq=215493975
+tcp_send_with_seq(): 21781->140.127.208.18:5, ----S- Len=20, seq=3339202854, chksum=9740
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:5, ----S- Seq=3339202854
+tcp_send_with_seq(): 21781->140.127.208.18:6, ----S- Len=20, seq=3920246069, chksum=e519
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:6, ----S- Seq=3920246069
+tcp_send_with_seq(): 21781->140.127.208.18:7, ----S- Len=20, seq=186333444, chksum=a4f4
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:7, ----S- Seq=186333444
+tcp_send_with_seq(): 21781->140.127.208.18:8, ----S- Len=20, seq=3947576603, chksum=5c10
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:8, ----S- Seq=3947576603
+tcp_send_with_seq(): 21781->140.127.208.18:9, ----S- Len=20, seq=2601255402, chksum=cb9b
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:9, ----S- Seq=2601255402
+tcp_send_with_seq(): 21781->140.127.208.18:10, ----S- Len=20, seq=1691616761, chksum=f3cd
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:10, ----S- Seq=1691616761
+tcp_send_with_seq(): 21781->140.127.208.18:11, ----S- Len=20, seq=741804488, chksum=c102
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:11, ----S- Seq=741804488
+tcp_send_with_seq(): 21781->140.127.208.18:12, ----S- Len=20, seq=3232042463, chksum=3a6a
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:12, ----S- Seq=3232042463
+tcp_send_with_seq(): 21781->140.127.208.18:13, ----S- Len=20, seq=3246526894, chksum=8d65
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:13, ----S- Seq=3246526894
+tcp_send_with_seq(): 21781->140.127.208.18:14, ----S- Len=20, seq=2135954877, chksum=afa3
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:14, ----S- Seq=2135954877
+tcp_send_with_seq(): 21781->140.127.208.18:15, ----S- Len=20, seq=3039238540, chksum=086a
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:15, ----S- Seq=3039238540
+tcp_send_with_seq(): 21781->140.127.208.18:16, ----S- Len=20, seq=73211267, chksum=db16
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:16, ----S- Seq=73211267
+tcp_send_with_seq(): 21781->140.127.208.18:17, ----S- Len=20, seq=2229166482, chksum=4952
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:17, ----S- Seq=2229166482
+tcp_send_with_seq(): 21781->140.127.208.18:18, ----S- Len=20, seq=1570399329, chksum=bd76
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:18, ----S- Seq=1570399329
+tcp_send_with_seq(): 21781->140.127.208.18:19, ----S- Len=20, seq=976775280, chksum=0f96
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:19, ----S- Seq=976775280
+tcp_send_with_seq(): 21781->140.127.208.18:20, ----S- Len=20, seq=1474194503, chksum=9174
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:20, ----S- Seq=1474194503
+tcp_send_with_seq(): 21781->140.127.208.18:21, ----S- Len=20, seq=3362549846, chksum=f2ff
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:21, ----S- Seq=3362549846
+tcp_send_with_seq(): 21781->140.127.208.18:22, ----S- Len=20, seq=4224414757, chksum=c3c8
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:22, ----S- Seq=4224414757
+tcp_send_with_seq(): 21781->140.127.208.18:23, ----S- Len=20, seq=1483044916, chksum=1a68
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:23, ----S- Seq=1483044916
+tcp_send_with_seq(): 21781->140.127.208.18:24, ----S- Len=20, seq=1447459851, chksum=6166
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:24, ----S- Seq=1447459851
+tcp_send_with_seq(): 21781->140.127.208.18:25, ----S- Len=20, seq=1919107098, chksum=3486
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:25, ----S- Seq=1919107098
+tcp_send_with_seq(): 21781->140.127.208.18:26, ----S- Len=20, seq=2145404137, chksum=e773
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:26, ----S- Seq=2145404137
+tcp_send_with_seq(): 21781->140.127.208.18:27, ----S- Len=20, seq=1019627768, chksum=f1b2
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:27, ----S- Seq=1019627768
+tcp_send_with_seq(): 21781->140.127.208.18:28, ----S- Len=20, seq=1048399055, chksum=62ad
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:28, ----S- Seq=1048399055
+tcp_send_with_seq(): 21781->140.127.208.18:29, ----S- Len=20, seq=1835618526, chksum=667a
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:29, ----S- Seq=1835618526
+tcp_send_with_seq(): 21781->140.127.208.18:30, ----S- Len=20, seq=4225717421, chksum=1fe8
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->140.127.208.18:30, ----S- Seq=4225717421
+TCP -AP---: 39->54451, Len=136, Seq=1160058669, Ack=256194920, chksum=5b83/98f7 ⚠MISMATCH
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#1: 192.168.0.1, 40-86-cb-34-5c-44
+arp_resend(): Obtained the MAC address of 192.168.0.1. Re-sending queued packets.
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#2: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#3: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#4: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#5: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#6: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#7: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#8: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#1: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#2: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#3: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#4: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#5: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#6: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#7: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#8: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#1: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#2: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#3: 192.168.0.1, 40-86-cb-34-5c-44
+TCP -A----: 54451->39, Len=26, Seq=256194920, Ack=1160058785, chksum=bbae/b5ae ⚠MISMATCH
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#4: 192.168.0.1, 40-86-cb-34-5c-44
+TCP -AP---: 39->54451, Len=880, Seq=1160058785, Ack=256194920, chksum=4386/8afe ⚠MISMATCH
+TCP -AP---: 39->54451, Len=136, Seq=1160059645, Ack=256194920, chksum=5b83/a86c ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256194920, Ack=1160059761, chksum=efaa/e9aa ⚠MISMATCH
+TCP -AP---: 39->54451, Len=408, Seq=1160059761, Ack=256194920, chksum=6b84/c227 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=152, Seq=256194920, Ack=1160060149, chksum=f45a/f45a
+TCP -AP---: 54451->39, Len=824, Seq=256195052, Ack=1160060149, chksum=c87c/c87c
+TCP -A----: 39->54451, Len=20, Seq=1160060149, Ack=256195856, chksum=e782/8374 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=136, Seq=1160060149, Ack=256195856, chksum=5b83/8c28 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=400, Seq=256195856, Ack=1160060265, chksum=afc1/afc1
+TCP -AP---: 39->54451, Len=176, Seq=1160060265, Ack=256196236, chksum=8383/2256 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=184, Seq=256196236, Ack=1160060421, chksum=0460/0460
+TCP -AP---: 39->54451, Len=120, Seq=1160060421, Ack=256196400, chksum=4b83/6ee2 ⚠MISMATCH
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#5: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#6: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#7: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#8: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#1: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#2: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#3: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#4: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#5: 192.168.0.1, 40-86-cb-34-5c-44
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   08-00-27-18-81-90 (192.168.0.200)
+ARPCache#6: 192.168.0.1, 40-86-cb-34-5c-44
+tcp_send_with_seq(): 21781->140.127.208.18:31, ----S- Len=20, seq=93018300, chksum=64da
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:31, ----S- Seq=93018300
+tcp_send_with_seq(): 21781->140.127.208.18:32, ----S- Len=20, seq=790387891, chksum=dbac
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:32, ----S- Seq=790387891
+tcp_send_with_seq(): 21781->140.127.208.18:33, ----S- Len=20, seq=990879874, chksum=185d
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:33, ----S- Seq=990879874
+tcp_send_with_seq(): 21781->140.127.208.18:34, ----S- Len=20, seq=1386259601, chksum=7741
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:34, ----S- Seq=1386259601
+tcp_send_with_seq(): 21781->140.127.208.18:35, ----S- Len=20, seq=2442570592, chksum=b0fb
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:35, ----S- Seq=2442570592
+tcp_send_with_seq(): 21781->140.127.208.18:36, ----S- Len=20, seq=2767826807, chksum=35e4
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:36, ----S- Seq=2767826807
+tcp_send_with_seq(): 21781->140.127.208.18:37, ----S- Len=20, seq=3870143302, chksum=b19e
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:37, ----S- Seq=3870143302
+tcp_send_with_seq(): 21781->140.127.208.18:38, ----S- Len=20, seq=1196668757, chksum=fc39
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:38, ----S- Seq=1196668757
+tcp_send_with_seq(): 21781->140.127.208.18:39, ----S- Len=20, seq=4125276964, chksum=9c87
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:39, ----S- Seq=4125276964
+tcp_send_with_seq(): 21781->140.127.208.18:40, ----S- Len=20, seq=605798203, chksum=4c55
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:40, ----S- Seq=605798203
+tcp_send_with_seq(): 21781->140.127.208.18:41, ----S- Len=20, seq=29983498, chksum=ceb3
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:41, ----S- Seq=29983498
+tcp_send_with_seq(): 21781->140.127.208.18:42, ----S- Len=20, seq=2088470297, chksum=0c35
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:42, ----S- Seq=2088470297
+tcp_send_with_seq(): 21781->140.127.208.18:43, ----S- Len=20, seq=1126075368, chksum=9969
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:43, ----S- Seq=1126075368
+tcp_send_with_seq(): 21781->140.127.208.18:44, ----S- Len=20, seq=2905444351, chksum=71fb
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:44, ----S- Seq=2905444351
+tcp_send_with_seq(): 21781->140.127.208.18:45, ----S- Len=20, seq=292197326, chksum=6593
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:45, ----S- Seq=292197326
+tcp_send_with_seq(): 21781->140.127.208.18:46, ----S- Len=20, seq=1390909405, chksum=d84d
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:46, ----S- Seq=1390909405
+tcp_send_with_seq(): 21781->140.127.208.18:47, ----S- Len=20, seq=254319532, chksum=c78d
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:47, ----S- Seq=254319532
+tcp_send_with_seq(): 21781->140.127.208.18:48, ----S- Len=20, seq=1944756131, chksum=0d25
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:48, ----S- Seq=1944756131
+tcp_send_with_seq(): 21781->140.127.208.18:49, ----S- Len=20, seq=1243669426, chksum=c70a
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:49, ----S- Seq=1243669426
+tcp_send_with_seq(): 21781->140.127.208.18:50, ----S- Len=20, seq=4018333569, chksum=9461
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:50, ----S- Seq=4018333569
+tcp_send_with_seq(): 21781->140.127.208.18:51, ----S- Len=20, seq=1835723664, chksum=9cdf
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:51, ----S- Seq=1835723664
+tcp_send_with_seq(): 21781->140.127.208.18:52, ----S- Len=20, seq=4176408167, chksum=4051
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:52, ----S- Seq=4176408167
+tcp_send_with_seq(): 21781->140.127.208.18:53, ----S- Len=20, seq=221246070, chksum=f038
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:53, ----S- Seq=221246070
+tcp_send_with_seq(): 21781->140.127.208.18:54, ----S- Len=20, seq=1664022085, chksum=20df
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:54, ----S- Seq=1664022085
+tcp_send_with_seq(): 21781->140.127.208.18:55, ----S- Len=20, seq=4103535188, chksum=a849
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:55, ----S- Seq=4103535188
+tcp_send_with_seq(): 21781->140.127.208.18:56, ----S- Len=20, seq=636550699, chksum=7714
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:56, ----S- Seq=636550699
+tcp_send_with_seq(): 21781->140.127.208.18:57, ----S- Len=20, seq=91275834, chksum=e770
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:57, ----S- Seq=91275834
+tcp_send_with_seq(): 21781->140.127.208.18:58, ----S- Len=20, seq=1329513993, chksum=4923
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:58, ----S- Seq=1329513993
+tcp_send_with_seq(): 21781->140.127.208.18:59, ----S- Len=20, seq=3113208344, chksum=e7b4
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:59, ----S- Seq=3113208344
+tcp_send_with_seq(): 21781->140.127.208.18:60, ----S- Len=20, seq=3426275055, chksum=669d
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:60, ----S- Seq=3426275055
+TCP -AP---: 54451->39, Len=224, Seq=256196400, Ack=1160060521, chksum=d25d/d25d
+TCP -AP---: 39->54451, Len=1480, Seq=1160060521, Ack=256196604, chksum=ab88/d6b9 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256196604, Ack=1160061997, chksum=9a9b/949b ⚠MISMATCH
+TCP -AP---: 54451->39, Len=120, Seq=256196604, Ack=1160061997, chksum=b7b7/b7b7
+TCP -AP---: 54451->39, Len=600, Seq=256196704, Ack=1160061997, chksum=77f3/77f3
+TCP -A----: 39->54451, Len=20, Seq=1160061997, Ack=256197284, chksum=e782/b767 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=600, Seq=1160061997, Ack=256197284, chksum=2b85/0473 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=120, Seq=256197284, Ack=1160062577, chksum=7b4d/7b4d
+TCP -AP---: 54451->39, Len=112, Seq=256197384, Ack=1160062577, chksum=214c/214c
+TCP -A----: 39->54451, Len=20, Seq=1160062577, Ack=256197476, chksum=e782/b364 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=1160, Seq=256197476, Ack=1160062577, chksum=ef85/ef85
+TCP -AP---: 39->54451, Len=136, Seq=1160062577, Ack=256198616, chksum=5b83/aeb9 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=256, Seq=256198616, Ack=1160062693, chksum=f12a/f12a
+TCP -AP---: 39->54451, Len=192, Seq=1160062693, Ack=256198852, chksum=9383/9cc3 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=320, Seq=256198852, Ack=1160062865, chksum=7956/7956
+TCP -AP---: 39->54451, Len=120, Seq=1160062865, Ack=256199152, chksum=4b83/a81b ⚠MISMATCH
+tcp_send_with_seq(): 21781->140.127.208.18:61, ----S- Len=20, seq=3971994366, chksum=cf78
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:61, ----S- Seq=3971994366
+tcp_send_with_seq(): 21781->140.127.208.18:62, ----S- Len=20, seq=435803853, chksum=c647
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:62, ----S- Seq=435803853
+tcp_send_with_seq(): 21781->140.127.208.18:63, ----S- Len=20, seq=1375132380, chksum=b90b
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:63, ----S- Seq=1375132380
+tcp_send_with_seq(): 21781->140.127.208.18:64, ----S- Len=20, seq=1114431187, chksum=4b17
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:64, ----S- Seq=1114431187
+tcp_send_with_seq(): 21781->140.127.208.18:65, ----S- Len=20, seq=385491618, chksum=edfe
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:65, ----S- Seq=385491618
+tcp_send_with_seq(): 21781->140.127.208.18:66, ----S- Len=20, seq=2368677553, chksum=a884
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:66, ----S- Seq=2368677553
+tcp_send_with_seq(): 21781->140.127.208.18:67, ----S- Len=20, seq=1283795584, chksum=82c1
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:67, ----S- Seq=1283795584
+tcp_send_with_seq(): 21781->140.127.208.18:68, ----S- Len=20, seq=1405562519, chksum=28b6
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:68, ----S- Seq=1405562519
+tcp_send_with_seq(): 21781->140.127.208.18:69, ----S- Len=20, seq=2921475430, chksum=fd5c
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:69, ----S- Seq=2921475430
+tcp_send_with_seq(): 21781->140.127.208.18:70, ----S- Len=20, seq=2630431093, chksum=466a
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:70, ----S- Seq=2630431093
+tcp_send_with_seq(): 21781->140.127.208.18:71, ----S- Len=20, seq=3716232516, chksum=be25
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:71, ----S- Seq=3716232516
+tcp_send_with_seq(): 21781->140.127.208.18:72, ----S- Len=20, seq=172702043, chksum=dcf4
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:72, ----S- Seq=172702043
+tcp_send_with_seq(): 21781->140.127.208.18:73, ----S- Len=20, seq=3068345642, chksum=7444
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:73, ----S- Seq=3068345642
+tcp_send_with_seq(): 21781->140.127.208.18:74, ----S- Len=20, seq=4215341369, chksum=063c
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:74, ----S- Seq=4215341369
+tcp_send_with_seq(): 21781->140.127.208.18:75, ----S- Len=20, seq=500696328, chksum=a015
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:75, ----S- Seq=500696328
+tcp_send_with_seq(): 21781->140.127.208.18:76, ----S- Len=20, seq=1840187679, chksum=b0c1
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:76, ----S- Seq=1840187679
+tcp_send_with_seq(): 21781->140.127.208.18:77, ----S- Len=20, seq=4085714414, chksum=0837
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:77, ----S- Seq=4085714414
+tcp_send_with_seq(): 21781->140.127.208.18:78, ----S- Len=20, seq=3332510205, chksum=dd5f
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:78, ----S- Seq=3332510205
+tcp_send_with_seq(): 21781->140.127.208.18:79, ----S- Len=20, seq=1006310860, chksum=b4e6
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:79, ----S- Seq=1006310860
+tcp_send_with_seq(): 21781->140.127.208.18:80, ----S- Len=20, seq=3758692803, chksum=ae3e
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:80, ----S- Seq=3758692803
+tcp_send_with_seq(): 21781->140.127.208.18:81, ----S- Len=20, seq=143007186, chksum=2212
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:81, ----S- Seq=143007186
+tcp_send_with_seq(): 21781->140.127.208.18:82, ----S- Len=20, seq=3263652257, chksum=5014
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:82, ----S- Seq=3263652257
+tcp_send_with_seq(): 21781->140.127.208.18:83, ----S- Len=20, seq=123299248, chksum=6ecb
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:83, ----S- Seq=123299248
+tcp_send_with_seq(): 21781->140.127.208.18:84, ----S- Len=20, seq=4027935111, chksum=d9de
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:84, ----S- Seq=4027935111
+tcp_send_with_seq(): 21781->140.127.208.18:85, ----S- Len=20, seq=2283236758, chksum=c842
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:85, ----S- Seq=2283236758
+tcp_send_with_seq(): 21781->140.127.208.18:86, ----S- Len=20, seq=1368485989, chksum=7e76
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:86, ----S- Seq=1368485989
+tcp_send_with_seq(): 21781->140.127.208.18:87, ----S- Len=20, seq=1940288628, chksum=5950
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:87, ----S- Seq=1940288628
+tcp_send_with_seq(): 21781->140.127.208.18:88, ----S- Len=20, seq=1797814347, chksum=ff54
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:88, ----S- Seq=1797814347
+tcp_send_with_seq(): 21781->140.127.208.18:89, ----S- Len=20, seq=2071034970, chksum=a640
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:89, ----S- Seq=2071034970
+tcp_send_with_seq(): 21781->140.127.208.18:90, ----S- Len=20, seq=1469399081, chksum=b2a0
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:90, ----S- Seq=1469399081
+TCP -A----: 54451->39, Len=26, Seq=256199152, Ack=1160062965, chksum=e18d/db8d ⚠MISMATCH
+TCP -AP---: 39->54451, Len=1480, Seq=1160062965, Ack=256199152, chksum=ab88/5f4f ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256199152, Ack=1160064441, chksum=1a88/1488 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=144, Seq=256199152, Ack=1160064441, chksum=06f3/06f3
+TCP -AP---: 54451->39, Len=112, Seq=256199276, Ack=1160064441, chksum=bbaf/bbaf
+TCP -AP---: 54451->39, Len=1080, Seq=256199368, Ack=1160064441, chksum=620b/620b
+TCP -A----: 39->54451, Len=20, Seq=1160064441, Ack=256200428, chksum=e782/e351 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=1480, Seq=1160064441, Ack=256200428, chksum=8b89/10b3 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256200428, Ack=1160066141, chksum=7a7c/747c ⚠MISMATCH
+TCP -A--S-: 80->21781, Len=26, Seq=2265467449, Ack=3758692804, chksum=8ee7/8ce7 ⚠MISMATCH
+✓ Port 80 → OPEN (SYN/ACK received)
+  TCP -A--S-: 80 -> 21781
+TCP ---R--: 21781->80, Len=20, Seq=3758692804, Ack=0, chksum=ab42/ab42
+TCP -AP---: 54451->39, Len=112, Seq=256200428, Ack=1160066141, chksum=fc5e/fc5e
+TCP -AP---: 39->54451, Len=320, Seq=1160066141, Ack=256200520, chksum=1384/359a ⚠MISMATCH
+TCP -AP---: 54451->39, Len=1016, Seq=256200520, Ack=1160066441, chksum=2fb8/2fb8
+TCP -AP---: 54451->39, Len=176, Seq=256201516, Ack=1160066441, chksum=c91f/c91f
+TCP -A----: 39->54451, Len=20, Seq=1160066441, Ack=256201672, chksum=e782/3745 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=136, Seq=1160066441, Ack=256201672, chksum=5b83/8001 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=256, Seq=256201672, Ack=1160066557, chksum=ed17/ed17
+TCP -AP---: 39->54451, Len=168, Seq=1160066557, Ack=256201908, chksum=7b83/6272 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=128, Seq=256201908, Ack=1160066705, chksum=7a93/7a93
+TCP -AP---: 39->54451, Len=624, Seq=1160066705, Ack=256202016, chksum=4385/9f91 ⚠MISMATCH
+tcp_send_with_seq(): 21781->140.127.208.18:91, ----S- Len=20, seq=2642560056, chksum=b556
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:91, ----S- Seq=2642560056
+tcp_send_with_seq(): 21781->140.127.208.18:92, ----S- Len=20, seq=2186299407, chksum=0f6e
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:92, ----S- Seq=2186299407
+tcp_send_with_seq(): 21781->140.127.208.18:93, ----S- Len=20, seq=187583518, chksum=21e1
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:93, ----S- Seq=187583518
+tcp_send_with_seq(): 21781->140.127.208.18:94, ----S- Len=20, seq=2312786157, chksum=a55d
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:94, ----S- Seq=2312786157
+tcp_send_with_seq(): 21781->140.127.208.18:95, ----S- Len=20, seq=2854114556, chksum=5139
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:95, ----S- Seq=2854114556
+tcp_send_with_seq(): 21781->140.127.208.18:96, ----S- Len=20, seq=3293075699, chksum=2f1b
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:96, ----S- Seq=3293075699
+tcp_send_with_seq(): 21781->140.127.208.18:97, ----S- Len=20, seq=4037696706, chksum=fcea
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:97, ----S- Seq=4037696706
+tcp_send_with_seq(): 21781->140.127.208.18:98, ----S- Len=20, seq=1564778705, chksum=533a
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:98, ----S- Seq=1564778705
+tcp_send_with_seq(): 21781->140.127.208.18:99, ----S- Len=20, seq=4260406432, chksum=d695
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:99, ----S- Seq=4260406432
+tcp_send_with_seq(): 21781->140.127.208.18:100, ----S- Len=20, seq=3308103863, chksum=81ca
+arp_send(): Packet sent to 192.168.0.1 (40-86-cb-34-5c-44) eth_type=0800
+tcp_send(): 21781->140.127.208.18:100, ----S- Seq=3308103863
+
+=== All 100 SYN packets sent, waiting for responses ===
+
+TCP -AP---: 54451->39, Len=568, Seq=256202016, Ack=1160067309, chksum=12c2/12c2
+TCP -AP---: 39->54451, Len=1480, Seq=1160067309, Ack=256202564, chksum=4f8e/7171 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256202564, Ack=1160070229, chksum=2a64/2464 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=968, Seq=1160070229, Ack=256202564, chksum=9b86/e3de ⚠MISMATCH
+TCP -AP---: 54451->39, Len=112, Seq=256202564, Ack=1160071177, chksum=d1e6/d1e6
+TCP -AP---: 39->54451, Len=1048, Seq=1160071177, Ack=256202656, chksum=eb86/4c10 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=456, Seq=256202656, Ack=1160072205, chksum=f981/f981
+TCP -AP---: 39->54451, Len=120, Seq=1160072205, Ack=256203092, chksum=4b83/4ca4 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=112, Seq=256203092, Ack=1160072305, chksum=9a27/9a27
+TCP -AP---: 54451->39, Len=808, Seq=256203184, Ack=1160072305, chksum=6be8/6be8
+TCP -A----: 39->54451, Len=20, Seq=1160072305, Ack=256203972, chksum=e782/5325 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=120, Seq=1160072305, Ack=256203972, chksum=4b83/ac1a ⚠MISMATCH
+TCP -AP---: 39->54451, Len=128, Seq=1160072405, Ack=256203972, chksum=5383/91d3 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256203972, Ack=1160072513, chksum=bf55/b955 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=200, Seq=256203972, Ack=1160072513, chksum=5b4a/5b4a
+TCP -AP---: 39->54451, Len=120, Seq=1160072513, Ack=256204152, chksum=4b83/2b34 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256204152, Ack=1160072613, chksum=a754/a154 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=272, Seq=1160072613, Ack=256204152, chksum=e383/862a ⚠MISMATCH
+TCP -AP---: 54451->39, Len=224, Seq=256204152, Ack=1160072865, chksum=6afe/6afe
+TCP -AP---: 39->54451, Len=120, Seq=1160072865, Ack=256204356, chksum=4b83/8250 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=136, Seq=256204356, Ack=1160072965, chksum=27af/27af
+TCP -AP---: 39->54451, Len=168, Seq=1160072965, Ack=256204472, chksum=7b83/3987 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=120, Seq=256204472, Ack=1160073113, chksum=5719/5719
+TCP -AP---: 39->54451, Len=112, Seq=1160073113, Ack=256204572, chksum=4383/862c ⚠MISMATCH
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   00-00-00-00-00-00 (192.168.0.120)
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   00-00-00-00-00-00 (192.168.0.173)
+TCP -A----: 54451->39, Len=26, Seq=256204572, Ack=1160073205, chksum=b550/af50 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=1480, Seq=1160073205, Ack=256204572, chksum=4f8e/1899 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256204572, Ack=1160076125, chksum=4a45/4445 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=1480, Seq=1160076125, Ack=256204572, chksum=2389/657e ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256204572, Ack=1160077721, chksum=0e3f/083f ⚠MISMATCH
+TCP -AP---: 54451->39, Len=112, Seq=256204572, Ack=1160077721, chksum=3cac/3cac
+TCP -AP---: 54451->39, Len=312, Seq=256204664, Ack=1160077721, chksum=266d/266d
+TCP -A----: 39->54451, Len=20, Seq=1160077721, Ack=256204956, chksum=e782/530c ⚠MISMATCH
+TCP -AP---: 39->54451, Len=120, Seq=1160077721, Ack=256204956, chksum=4b83/0e43 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256204956, Ack=1160077821, chksum=2a3d/243d ⚠MISMATCH
+TCP -AP---: 39->54451, Len=288, Seq=1160077821, Ack=256204956, chksum=f383/eaa1 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=208, Seq=256204956, Ack=1160078089, chksum=3d06/3d06
+TCP -AP---: 39->54451, Len=120, Seq=1160078089, Ack=256205144, chksum=4b83/7a33 ⚠MISMATCH
+  [Progress: 1/100 responses received, 1 sec elapsed]
+TCP -A----: 54451->39, Len=26, Seq=256205144, Ack=1160078189, chksum=ff3a/f93a ⚠MISMATCH
+TCP ----S-: 60022->443, Len=40, Seq=2534206437, Ack=0, chksum=07be/bdf4 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=1152, Seq=1160078189, Ack=256205144, chksum=5387/023c ⚠MISMATCH
+TCP -AP---: 54451->39, Len=112, Seq=256205144, Ack=1160079321, chksum=401d/401d
+TCP -AP---: 39->54451, Len=128, Seq=1160079321, Ack=256205236, chksum=5383/3063 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=952, Seq=256205236, Ack=1160079429, chksum=abba/abba
+TCP -AP---: 39->54451, Len=120, Seq=1160079429, Ack=256206168, chksum=4b83/61a6 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=160, Seq=256206168, Ack=1160079529, chksum=87e2/87e2
+TCP -AP---: 39->54451, Len=120, Seq=1160079529, Ack=256206308, chksum=4b83/0015 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256206308, Ack=1160079629, chksum=d330/cd30 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=144, Seq=1160079629, Ack=256206308, chksum=6383/1e81 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=184, Seq=256206308, Ack=1160079753, chksum=f9ac/f9ac
+TCP -AP---: 39->54451, Len=120, Seq=1160079753, Ack=256206472, chksum=4b83/9fb1 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=168, Seq=1160079853, Ack=256206472, chksum=7b83/d171 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256206472, Ack=1160080001, chksum=bc2e/b62e ⚠MISMATCH
+TCP -AP---: 54451->39, Len=128, Seq=256206472, Ack=1160080001, chksum=52f1/52f1
+TCP -AP---: 39->54451, Len=1480, Seq=1160080001, Ack=256206580, chksum=4f8e/2ab3 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256206580, Ack=1160082921, chksum=e622/e022 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=1480, Seq=1160082921, Ack=256206580, chksum=ab88/7b71 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256206580, Ack=1160084397, chksum=221d/1c1d ⚠MISMATCH
+TCP -AP---: 39->54451, Len=1152, Seq=1160084397, Ack=256206580, chksum=5387/0949 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=112, Seq=256206580, Ack=1160085529, chksum=d714/d714
+TCP -AP---: 54451->39, Len=312, Seq=256206672, Ack=1160085529, chksum=d1d4/d1d4
+TCP -A----: 39->54451, Len=20, Seq=1160085529, Ack=256206964, chksum=e782/fae5 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=120, Seq=1160085529, Ack=256206964, chksum=4b83/3e24 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256206964, Ack=1160085629, chksum=d616/d016 ⚠MISMATCH
+TCP -A--S-: 443->60022, Len=40, Seq=3210475915, Ack=2534206438, chksum=ba24/ba24
+TCP -A----: 60022->443, Len=32, Seq=2534206438, Ack=3210475916, chksum=ffbd/1850 ⚠MISMATCH
+TCP -AP---: 60022->443, Len=1480, Seq=2534206438, Ack=3210475916, chksum=9dc4/1180 ⚠MISMATCH
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   00-00-00-00-00-00 (192.168.0.173)
+TCP -AP---: 57832->443, Len=139, Seq=842582687, Ack=1664545619, chksum=905f/905f
+TCP -AP---: 57832->443, Len=1480, Seq=842582806, Ack=1664545619, chksum=cba8/645c ⚠MISMATCH
+TCP -A----: 443->60022, Len=32, Seq=3210475916, Ack=2534208132, chksum=c249/c249
+  [Progress: 1/100 responses received, 2 sec elapsed]
+TCP -AP---: 39->54451, Len=288, Seq=1160085629, Ack=256206964, chksum=f383/e399 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=112, Seq=256206964, Ack=1160085897, chksum=a0e1/a0e1
+TCP -AP---: 39->54451, Len=120, Seq=1160085897, Ack=256207056, chksum=4b83/e9cc ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256207056, Ack=1160085997, chksum=0615/0015 ⚠MISMATCH
+TCP -A----: 443->57832, Len=26, Seq=1664545619, Ack=842584246, chksum=02c7/fcc6 ⚠MISMATCH
+TCP -A----: 443->57832, Len=26, Seq=1664545619, Ack=842587126, chksum=c2bb/bcbb ⚠MISMATCH
+TCP -A----: 443->57832, Len=26, Seq=1664545619, Ack=842590006, chksum=82b0/7cb0 ⚠MISMATCH
+TCP -A----: 443->57832, Len=26, Seq=1664545619, Ack=842594326, chksum=a29f/9c9f ⚠MISMATCH
+TCP -A----: 443->57832, Len=26, Seq=1664545619, Ack=842595766, chksum=089a/029a ⚠MISMATCH
+TCP -A----: 443->57832, Len=26, Seq=1664545619, Ack=842598419, chksum=a58f/9f8f ⚠MISMATCH
+TCP -AP---: 443->57832, Len=119, Seq=1664545619, Ack=842598419, chksum=c287/c287
+TCP -AP---: 57832->443, Len=55, Seq=842598419, Ack=1664545718, chksum=f9ed/f9ed
+TCP -A----: 443->57832, Len=26, Seq=1664545718, Ack=842598454, chksum=208f/1a8f ⚠MISMATCH
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   00-00-00-00-00-00 (192.168.0.180)
+ARP Eth=0001/6, IP=0800/4, Op=0002(Reply)
+	From 90-65-84-7e-b0-99 (192.168.0.180)
+	To   40-86-cb-34-5c-44 (192.168.0.1)
+TCP -AP---: 39->54451, Len=224, Seq=1160085997, Ack=256207056, chksum=b383/754d ⚠MISMATCH
+TCP -AP---: 54451->39, Len=152, Seq=256207056, Ack=1160086201, chksum=ea84/ea84
+TCP -A----: 39->54451, Len=20, Seq=1160086201, Ack=256207188, chksum=e782/7ae2 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=128, Seq=1160086201, Ack=256207188, chksum=5383/116c ⚠MISMATCH
+TCP -AP---: 54451->39, Len=128, Seq=256207188, Ack=1160086309, chksum=3c20/3c20
+TCP -A----: 39->54451, Len=20, Seq=1160086309, Ack=256207296, chksum=e782/a2e1 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=128, Seq=1160086309, Ack=256207296, chksum=5383/f23a ⚠MISMATCH
+TCP -AP---: 54451->39, Len=136, Seq=256207296, Ack=1160086417, chksum=c1f9/c1f9
+TCP -AP---: 39->54451, Len=832, Seq=1160086417, Ack=256207412, chksum=1386/2b78 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=176, Seq=256207412, Ack=1160087229, chksum=0409/0409
+TCP -AP---: 54451->39, Len=416, Seq=256207568, Ack=1160087229, chksum=5a47/5a47
+TCP -A----: 39->54451, Len=20, Seq=1160087229, Ack=256207964, chksum=e782/6edb ⚠MISMATCH
+TCP -AP---: 39->54451, Len=1160, Seq=1160087229, Ack=256207964, chksum=5b87/9c13 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=112, Seq=256207964, Ack=1160088369, chksum=db57/db57
+TCP -AP---: 39->54451, Len=224, Seq=1160088369, Ack=256208056, chksum=b383/27dd ⚠MISMATCH
+TCP -AP---: 54451->39, Len=864, Seq=256208056, Ack=1160088573, chksum=3e94/3e94
+TCP -AP---: 39->54451, Len=112, Seq=1160088573, Ack=256208900, chksum=4383/f3df ⚠MISMATCH
+TCP -AP---: 54451->39, Len=160, Seq=256208900, Ack=1160088665, chksum=f51b/f51b
+TCP -AP---: 39->54451, Len=120, Seq=1160088665, Ack=256209040, chksum=4b83/7d59 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=400, Seq=1160088765, Ack=256209040, chksum=6384/e7ad ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256209040, Ack=1160089145, chksum=fd00/f700 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=176, Seq=256209040, Ack=1160089145, chksum=eae5/eae5
+TCP -AP---: 54451->39, Len=120, Seq=256209196, Ack=1160089145, chksum=4b53/4b53
+TCP -A----: 39->54451, Len=20, Seq=1160089145, Ack=256209296, chksum=e782/bece ⚠MISMATCH
+TCP -AP---: 39->54451, Len=168, Seq=1160089145, Ack=256209296, chksum=7b83/36bd ⚠MISMATCH
+TCP -AP---: 54451->39, Len=128, Seq=256209296, Ack=1160089293, chksum=7b7b/7b7b
+TCP -AP---: 39->54451, Len=128, Seq=1160089293, Ack=256209404, chksum=5383/50f6 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256209404, Ack=1160089401, chksum=91fe/8bfe ⚠MISMATCH
+TCP -AP---: 39->54451, Len=1480, Seq=1160089401, Ack=256209404, chksum=4f8e/3601 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256209404, Ack=1160092321, chksum=25f3/1ff3 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=1480, Seq=1160092321, Ack=256209404, chksum=4f8e/077f ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256209404, Ack=1160095241, chksum=bde7/b7e7 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=568, Seq=1160095241, Ack=256209404, chksum=0b85/80e4 ⚠MISMATCH
+TCP -AP---: 54451->39, Len=112, Seq=256209404, Ack=1160095789, chksum=65d0/65d0
+TCP -AP---: 54451->39, Len=296, Seq=256209496, Ack=1160095789, chksum=2ab5/2ab5
+TCP -A----: 39->54451, Len=20, Seq=1160095789, Ack=256209772, chksum=e782/eeb2 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=120, Seq=1160095789, Ack=256209772, chksum=4b83/80e0 ⚠MISMATCH
+TCP -AP---: 443->60022, Len=190, Seq=3210481436, Ack=2534208132, chksum=00ec/00ec
+TCP -A----: 60022->443, Len=44, Seq=2534208132, Ack=3210475916, chksum=0bbe/0470 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256209772, Ack=1160095889, chksum=c7e3/c1e3 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=136, Seq=1160095889, Ack=256209772, chksum=5b83/06bf ⚠MISMATCH
+TCP -AP---: 54451->39, Len=120, Seq=256209772, Ack=1160096005, chksum=18fd/18fd
+TCP -AP---: 54451->39, Len=176, Seq=256209872, Ack=1160096005, chksum=c8f3/c8f3
+TCP -A----: 39->54451, Len=20, Seq=1160096005, Ack=256210028, chksum=e782/16b1 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=144, Seq=1160096005, Ack=256210028, chksum=6383/3aed ⚠MISMATCH
+TCP -AP---: 54451->39, Len=136, Seq=256210028, Ack=1160096129, chksum=7122/7122
+TCP -AP---: 39->54451, Len=232, Seq=1160096129, Ack=256210144, chksum=bb83/60e3 ⚠MISMATCH
+TCP -A----: 54451->39, Len=26, Seq=256210144, Ack=1160096341, chksum=91e0/8be0 ⚠MISMATCH
+TCP -AP---: 39->54451, Len=280, Seq=1160096341, Ack=256210144, chksum=eb83/28c5 ⚠MISMATCH
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 40-86-cb-34-5c-44 (192.168.0.1)
+	To   00-00-00-00-00-00 (192.168.0.173)
+TCP -AP---: 54451->39, Len=112, Seq=256210144, Ack=1160096601, chksum=a8b3/a8b3
+TCP -AP---: 39->54451, Len=120, Seq=1160096601, Ack=256210236, chksum=4b83/5a00 ⚠MISMATCH
+  [Progress: 1/100 responses received, 3 sec elapsed]
+⊘ Port 1 → FILTERED (no response)
+⊘ Port 2 → FILTERED (no response)
+⊘ Port 3 → FILTERED (no response)
+⊘ Port 4 → FILTERED (no response)
+⊘ Port 5 → FILTERED (no response)
+⊘ Port 6 → FILTERED (no response)
+⊘ Port 7 → FILTERED (no response)
+⊘ Port 8 → FILTERED (no response)
+⊘ Port 9 → FILTERED (no response)
+⊘ Port 10 → FILTERED (no response)
+⊘ Port 11 → FILTERED (no response)
+⊘ Port 12 → FILTERED (no response)
+⊘ Port 13 → FILTERED (no response)
+⊘ Port 14 → FILTERED (no response)
+⊘ Port 15 → FILTERED (no response)
+⊘ Port 16 → FILTERED (no response)
+⊘ Port 17 → FILTERED (no response)
+⊘ Port 18 → FILTERED (no response)
+⊘ Port 19 → FILTERED (no response)
+⊘ Port 20 → FILTERED (no response)
+⊘ Port 21 → FILTERED (no response)
+⊘ Port 22 → FILTERED (no response)
+⊘ Port 23 → FILTERED (no response)
+⊘ Port 24 → FILTERED (no response)
+⊘ Port 25 → FILTERED (no response)
+⊘ Port 26 → FILTERED (no response)
+⊘ Port 27 → FILTERED (no response)
+⊘ Port 28 → FILTERED (no response)
+⊘ Port 29 → FILTERED (no response)
+⊘ Port 30 → FILTERED (no response)
+⊘ Port 31 → FILTERED (no response)
+⊘ Port 32 → FILTERED (no response)
+⊘ Port 33 → FILTERED (no response)
+⊘ Port 34 → FILTERED (no response)
+⊘ Port 35 → FILTERED (no response)
+⊘ Port 36 → FILTERED (no response)
+⊘ Port 37 → FILTERED (no response)
+⊘ Port 38 → FILTERED (no response)
+⊘ Port 39 → FILTERED (no response)
+⊘ Port 40 → FILTERED (no response)
+⊘ Port 41 → FILTERED (no response)
+⊘ Port 42 → FILTERED (no response)
+⊘ Port 43 → FILTERED (no response)
+⊘ Port 44 → FILTERED (no response)
+⊘ Port 45 → FILTERED (no response)
+⊘ Port 46 → FILTERED (no response)
+⊘ Port 47 → FILTERED (no response)
+⊘ Port 48 → FILTERED (no response)
+⊘ Port 49 → FILTERED (no response)
+⊘ Port 50 → FILTERED (no response)
+⊘ Port 51 → FILTERED (no response)
+⊘ Port 52 → FILTERED (no response)
+⊘ Port 53 → FILTERED (no response)
+⊘ Port 54 → FILTERED (no response)
+⊘ Port 55 → FILTERED (no response)
+⊘ Port 56 → FILTERED (no response)
+⊘ Port 57 → FILTERED (no response)
+⊘ Port 58 → FILTERED (no response)
+⊘ Port 59 → FILTERED (no response)
+⊘ Port 60 → FILTERED (no response)
+⊘ Port 61 → FILTERED (no response)
+⊘ Port 62 → FILTERED (no response)
+⊘ Port 63 → FILTERED (no response)
+⊘ Port 64 → FILTERED (no response)
+⊘ Port 65 → FILTERED (no response)
+⊘ Port 66 → FILTERED (no response)
+⊘ Port 67 → FILTERED (no response)
+⊘ Port 68 → FILTERED (no response)
+⊘ Port 69 → FILTERED (no response)
+⊘ Port 70 → FILTERED (no response)
+⊘ Port 71 → FILTERED (no response)
+⊘ Port 72 → FILTERED (no response)
+⊘ Port 73 → FILTERED (no response)
+⊘ Port 74 → FILTERED (no response)
+⊘ Port 75 → FILTERED (no response)
+⊘ Port 76 → FILTERED (no response)
+⊘ Port 77 → FILTERED (no response)
+⊘ Port 78 → FILTERED (no response)
+⊘ Port 79 → FILTERED (no response)
+⊘ Port 81 → FILTERED (no response)
+⊘ Port 82 → FILTERED (no response)
+⊘ Port 83 → FILTERED (no response)
+⊘ Port 84 → FILTERED (no response)
+⊘ Port 85 → FILTERED (no response)
+⊘ Port 86 → FILTERED (no response)
+⊘ Port 87 → FILTERED (no response)
+⊘ Port 88 → FILTERED (no response)
+⊘ Port 89 → FILTERED (no response)
+⊘ Port 90 → FILTERED (no response)
+⊘ Port 91 → FILTERED (no response)
+⊘ Port 92 → FILTERED (no response)
+⊘ Port 93 → FILTERED (no response)
+⊘ Port 94 → FILTERED (no response)
+⊘ Port 95 → FILTERED (no response)
+⊘ Port 96 → FILTERED (no response)
+⊘ Port 97 → FILTERED (no response)
+⊘ Port 98 → FILTERED (no response)
+⊘ Port 99 → FILTERED (no response)
+⊘ Port 100 → FILTERED (no response)
+
+=== All ports responded ===
+
+========================================
+=== Scan Results Summary ===
+========================================
+
+--- OPEN ports ---
+  80/tcp  open
+
+--- CLOSED ports ---
+  (none)
+
+--- FILTERED ports ---
+  1/tcp  filtered
+  2/tcp  filtered
+  3/tcp  filtered
+  4/tcp  filtered
+  5/tcp  filtered
+  6/tcp  filtered
+  7/tcp  filtered
+  8/tcp  filtered
+  9/tcp  filtered
+  10/tcp  filtered
+  ... and 89 more filtered ports
+
+========================================
+Target: 140.127.208.18 (140.127.208.18)
+Total ports scanned: 100
+Open:     1
+Closed:   0
+Filtered: 99
+========================================
+
+✓ Network device closed
