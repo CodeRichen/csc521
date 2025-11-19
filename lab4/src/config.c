@@ -18,8 +18,8 @@
     uint8_t defarpip[4]   = {0};
 uint8_t defpingip[4]  = {140, 127, 208, 18};  // 系網預設目標
 
-uint8_t defdnsip[4]   = {192, 168, 0, 1};     // 使用閘道器作為 DNS 伺服器
-char *defdnsquery     = "www.google.com";     // 測試域名
+uint8_t defdnsip[4]   = {192, 168, 0, 1};       // 使用閘道器作為 DNS 伺服器
+char *defdnsquery     = "www.csie.nuk.edu.tw";     // 測試域名：高大資工系
 uint16_t tcp_filter_port = 0x5515;            // 修正為學號末四碼
 
 /* ================================

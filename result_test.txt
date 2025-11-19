@@ -1,0 +1,164 @@
+Loading network configuration for enp0s3...
+[CONFIG] MAC  = 08:00:27:18:81:90
+[CONFIG] IP   = 192.168.0.200
+[CONFIG] MASK = 255.255.255.0
+[CONFIG] GW   = 192.168.0.1
+[CONFIG] defarpip  = 192.168.0.1
+[CONFIG] defpingip = 140.127.208.18
+[CONFIG] defdnsip  = 192.168.0.1
+[CONFIG] defdnsquery = www.google.com
+✓ Capturing packets on interface enp0s3
+
+=== TCP Port Scanner ===
+Target: www.google.com
+Port range: 1-100
+
+→ Resolving DNS...
+dns_sendom(): dns_sendom(): www.google.com
+dns_packdom(): 3 www 6 google 3 com 0
+dns_sendom(): Content of buffer:
+55 15 01 00 00 01 00 00 00 00 00 00 03 77 77 77 
+06 67 6f 6f 67 6c 65 03 63 6f 6d 00 00 01 00 01 
+udp_send(): 21781->192.168.0.1:53, Len=40, chksum=7d44
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+dns_sendom(): dns_sendom(): www.google.com
+dns_packdom(): 3 www 6 google 3 com 0
+dns_sendom(): Content of buffer:
+55 15 01 00 00 01 00 00 00 00 00 00 03 77 77 77 
+06 67 6f 6f 67 6c 65 03 63 6f 6d 00 00 01 00 01 
+udp_send(): 21781->192.168.0.1:53, Len=40, chksum=7d44
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+dns_sendom(): dns_sendom(): www.google.com
+dns_packdom(): 3 www 6 google 3 com 0
+dns_sendom(): Content of buffer:
+55 15 01 00 00 01 00 00 00 00 00 00 03 77 77 77 
+06 67 6f 6f 67 6c 65 03 63 6f 6d 00 00 01 00 01 
+udp_send(): 21781->192.168.0.1:53, Len=40, chksum=7d44
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+
+resolve(): dns_extract(): [Question] www.google.com
+resolve(): dns_extract(): [Answer 0] www.google.com IN A 142.250.196.196
+resolve(): ✓ Resolved www.google.com → 142.250.196.196
+
+✓ Resolved: www.google.com = 142.250.196.196
+
+=== Starting Port Scan to 142.250.196.196 ===
+Sending SYN packets to ports 1-100...
+
+tcp_send_with_seq(): 21781->142.250.196.196:1, ----S- Len=20, seq=3584268204, chksum=4cd4
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:1, ----S- Seq=3584268204
+tcp_send_with_seq(): 21781->142.250.196.196:2, ----S- Len=20, seq=3971322815, chksum=26c1
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:2, ----S- Seq=3971322815
+tcp_send_with_seq(): 21781->142.250.196.196:3, ----S- Len=20, seq=4238647182, chksum=67a5
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:3, ----S- Seq=4238647182
+tcp_send_with_seq(): 21781->142.250.196.196:4, ----S- Len=20, seq=2863307673, chksum=55fb
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:4, ----S- Seq=2863307673
+tcp_send_with_seq(): 21781->142.250.196.196:5, ----S- Len=20, seq=3530393576, chksum=42e7
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:5, ----S- Seq=3530393576
+tcp_send_with_seq(): 21781->142.250.196.196:6, ----S- Len=20, seq=4152198139, chksum=1ec6
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:6, ----S- Seq=4152198139
+tcp_send_with_seq(): 21781->142.250.196.196:7, ----S- Len=20, seq=2841546698, chksum=6e08
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:7, ----S- Seq=2841546698
+tcp_send_with_seq(): 21781->142.250.196.196:8, ----S- Len=20, seq=993954773, chksum=827a
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:8, ----S- Seq=993954773
+tcp_send_with_seq(): 21781->142.250.196.196:9, ----S- Len=20, seq=2664609572, chksum=9deb
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:9, ----S- Seq=2664609572
+tcp_send_with_seq(): 21781->142.250.196.196:10, ----S- Len=20, seq=3164386103, chksum=bfd1
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:10, ----S- Seq=3164386103
+tcp_send_with_seq(): 21781->142.250.196.196:11, ----S- Len=20, seq=3814178566, chksum=349f
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:11, ----S- Seq=3814178566
+tcp_send_with_seq(): 21781->142.250.196.196:12, ----S- Len=20, seq=3335895825, chksum=aabf
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:12, ----S- Seq=3335895825
+tcp_send_with_seq(): 21781->142.250.196.196:13, ----S- Len=20, seq=3850676064, chksum=abb4
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:13, ----S- Seq=3850676064
+tcp_send_with_seq(): 21781->142.250.196.196:14, ----S- Len=20, seq=4140016499, chksum=58a7
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.196:14, ----S- Seq=4140016499
+tcp_send_with_seq(): 21781->142.250.196.196:15, ----S- Len=20, seq=2926489410, chksum=dde3
+arp_send(): MAC address of 192.168.0.1 is unavailable. The outgoing packet is queued.
+arp_request() to 192.168.0.1
+ARP Eth=0001/6, IP=0800/4, Op=0001(Request)
+	From 08-00-27-18-81-90 (192.168.0.200)
+	To   00-00-00-00-00-00 (192.168.0.1)
+tcp_send(): 21781->142.250.196.19
